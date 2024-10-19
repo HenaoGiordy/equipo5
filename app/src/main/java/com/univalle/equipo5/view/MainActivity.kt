@@ -1,10 +1,10 @@
 package com.univalle.equipo5.view
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
+import androidx.navigation.findNavController
 import com.univalle.equipo5.R
 
 class MainActivity : AppCompatActivity() {
@@ -13,13 +13,14 @@ class MainActivity : AppCompatActivity() {
         val screenSplash = installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        screenSplash.setKeepOnScreenCondition{false}
+        screenSplash.setKeepOnScreenCondition { false }
 
-        supportFragmentManager.commit {
-            replace<HomeMain>(R.id.homeMain)
-            setReorderingAllowed(true)
-            addToBackStack("replacement")
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        if (!navController.navigateUp()){
+            super.onBackPressed()
         }
-
     }
 }
