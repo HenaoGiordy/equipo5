@@ -55,4 +55,9 @@ dependencies {
 
     // Dependencia para Fragments
     implementation(libs.androidx.fragment)
+
+    // Navigation
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+
 }

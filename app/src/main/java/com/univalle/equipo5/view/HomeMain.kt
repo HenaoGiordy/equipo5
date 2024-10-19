@@ -1,60 +1,118 @@
 package com.univalle.equipo5.view
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.univalle.equipo5.R
+import android.view.animation.AnimationUtils
+import androidx.navigation.fragment.findNavController
+import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeMain.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeMain : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var mediaPlayer: MediaPlayer? = null
+    private var isSoundOn: Boolean = true
+    private var _binding: FragmentHomeMainBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.soundpokemon)
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_main, container, false)
+        // Inflar el layout usando DataBinding
+        _binding = FragmentHomeMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Configurar el Toolbar desde el fragment usando DataBinding
+        val toolbar = binding.customToolbar
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+
+        // Asignar animación y funcionalidad a cada ícono usando binding
+        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+
+        binding.rate.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+        }
+
+        binding.sound.setImageResource(R.drawable.sound)
+
+        binding.sound.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            if (isSoundOn) {
+                mediaPlayer?.pause()
+                binding.sound.setImageResource(R.drawable.nosound) // Cambia al ícono de sonido apagado
+            } else {
+                mediaPlayer?.start()
+                binding.sound.setImageResource(R.drawable.sound) // Cambia al ícono de sonido encendido
+            }
+            isSoundOn = !isSoundOn
+        }
+
+        binding.instructions.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la fragment Instructions
+            findNavController().navigate(R.id.action_homeMain_to_instructions)
+        }
+
+        binding.add.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+            findNavController().navigate(R.id.action_homeMain_to_challenge)
+        }
+
+        binding.share.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer?.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reinicia el sonido si estaba encendido
+        if (isSoundOn) {
+            mediaPlayer?.start()
+            binding.sound.setImageResource(R.drawable.sound)
+        } else {
+            mediaPlayer?.pause()
+            binding.sound.setImageResource(R.drawable.nosound)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeMain.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeMain().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() = HomeMain().apply {}
     }
 }
+
+
