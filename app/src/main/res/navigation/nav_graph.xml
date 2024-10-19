@@ -26,5 +26,8 @@
         android:id="@+id/challenge"
         android:name="com.univalle.equipo5.view.Challenge"
         android:label="Challenge" />
+        <action
+            android:id="@+id/action_challenge_to_homeMain"
+            app:destination="@+id/homeMain" />
 
 </navigation>

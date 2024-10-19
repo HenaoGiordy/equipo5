@@ -37,11 +37,9 @@ class HomeMain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configurar el Toolbar desde el fragment usando DataBinding
         val toolbar = binding.customToolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
 
-        // Asignar animación y funcionalidad a cada ícono usando binding
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
         binding.rate.setOnClickListener {
