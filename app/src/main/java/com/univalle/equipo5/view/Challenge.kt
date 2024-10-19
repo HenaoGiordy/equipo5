@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
@@ -66,6 +67,13 @@ class Challenge : Fragment() {
         binding.addChallenge.setOnClickListener {
             it.startAnimation(scaleAnimation)
         }
+
+        binding.backButton.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // vuelve a homeMain
+            findNavController().navigate(R.id.action_challenge_to_homeMain)
+        }
+
     }
 
 

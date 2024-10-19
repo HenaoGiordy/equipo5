@@ -18,7 +18,7 @@
             tools:listitem="@layout/item_challenge" />
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarChallenge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray"
@@ -34,7 +34,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:padding="8dp"
-                android:src="@drawable/share"
+                android:src="@drawable/flecha"
                 app:tint="@color/orange" />
 
             <TextView
