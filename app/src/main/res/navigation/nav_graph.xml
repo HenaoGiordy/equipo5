@@ -11,11 +11,20 @@
         <action
             android:id="@+id/action_homeMain_to_instructions"
             app:destination="@id/instructions" />
+        <action
+            android:id="@+id/action_homeMain_to_challenge"
+            app:destination="@+id/challenge" />
+
     </fragment>
 
     <fragment
         android:id="@+id/instructions"
         android:name="com.univalle.equipo5.view.Instructions"
         android:label="Instructions" />
+
+    <fragment
+        android:id="@+id/challenge"
+        android:name="com.univalle.equipo5.view.Challenge"
+        android:label="Challenge" />
 
 </navigation>

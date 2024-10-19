@@ -72,6 +72,7 @@ class HomeMain : Fragment() {
         binding.add.setOnClickListener {
             it.startAnimation(scaleAnimation)
             // Navegar a la siguiente pantalla o realizar otra acción
+            findNavController().navigate(R.id.action_homeMain_to_challenge)
         }
 
         binding.share.setOnClickListener {
