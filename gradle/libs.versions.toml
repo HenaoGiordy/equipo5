@@ -13,7 +13,6 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 fragment = "1.6.1"
 navigation = "2.5.3"
-navigationFragment = "2.8.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,7 +28,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment" }
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

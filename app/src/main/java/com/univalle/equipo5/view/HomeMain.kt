@@ -6,16 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.univalle.equipo5.R
+import android.view.animation.AnimationUtils
+import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeMain.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeMain : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
     private var isSoundOn: Boolean = true
@@ -46,7 +42,7 @@ class HomeMain : Fragment() {
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
 
         // Asignar animación y funcionalidad a cada ícono usando binding
-        val scaleAnimation = android.view.animation.AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
         binding.rate.setOnClickListener {
             it.startAnimation(scaleAnimation)
@@ -70,7 +66,7 @@ class HomeMain : Fragment() {
         binding.instructions.setOnClickListener {
             it.startAnimation(scaleAnimation)
             // Navegar a la fragment Instructions
-            // findNavController().navigate(R.id.fragmentInstructions)
+            findNavController().navigate(R.id.action_homeMain_to_instructions)
         }
 
         binding.add.setOnClickListener {
@@ -87,6 +83,18 @@ class HomeMain : Fragment() {
     override fun onPause() {
         super.onPause()
         mediaPlayer?.pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reinicia el sonido si estaba encendido
+        if (isSoundOn) {
+            mediaPlayer?.start()
+            binding.sound.setImageResource(R.drawable.sound)
+        } else {
+            mediaPlayer?.pause()
+            binding.sound.setImageResource(R.drawable.nosound)
+        }
     }
 
     override fun onDestroyView() {

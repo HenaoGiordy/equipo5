@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/homeMain">
 
     <fragment
         android:id="@+id/homeMain"
         android:name="com.univalle.equipo5.view.HomeMain"
-        tools:layout="@layout/fragment_home_main" />
+        android:label="HomeMain">
+        <action
+            android:id="@+id/action_homeMain_to_instructions"
+            app:destination="@id/instructions" />
+    </fragment>
 
     <fragment
-        android:id="@+id/fragmentInstructions"
+        android:id="@+id/instructions"
         android:name="com.univalle.equipo5.view.Instructions"
-        tools:layout="@layout/fragment_instructions" />
+        android:label="Instructions" />
 
 </navigation>
