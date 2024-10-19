@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -55,4 +56,9 @@ dependencies {
 
     // Dependencia para Fragments
     implementation(libs.androidx.fragment)
+
+    // Navigation
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment)
 }

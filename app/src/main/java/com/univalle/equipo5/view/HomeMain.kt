@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -34,8 +37,55 @@ class HomeMain : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_main, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_home_main, container, false)
+
+        val scaleAnimation = android.view.animation.AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+
+        val rateIcon: ImageView = rootView.findViewById(R.id.rate)
+        val soundIcon: ImageView = rootView.findViewById(R.id.sound)
+        val instructionsIcon: ImageView = rootView.findViewById(R.id.instructions)
+        val addIcon: ImageView = rootView.findViewById(R.id.add)
+        val shareIcon: ImageView = rootView.findViewById(R.id.share)
+
+        // Asignar animación y funcionalidad a cada ícono
+        rateIcon.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+        }
+
+        soundIcon.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+        }
+
+        instructionsIcon.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la fragment Instructions
+            // findNavController().navigate(R.id.fragmentInstructions)
+        }
+
+        addIcon.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+        }
+
+        shareIcon.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            // Navegar a la siguiente pantalla o realizar otra acción
+        }
+
+        return rootView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Vincular el Toolbar desde el fragment
+        val toolbar: androidx.appcompat.widget.Toolbar = view.findViewById(R.id.custom_toolbar)
+
+        // Configura el toolbar como la ActionBar de la actividad
+        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+
     }
 
     companion object {

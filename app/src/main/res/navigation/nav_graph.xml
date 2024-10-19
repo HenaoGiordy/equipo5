@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeMain">
+
+    <fragment
+        android:id="@+id/homeMain"
+        android:name="com.univalle.equipo5.view.HomeMain"
+        tools:layout="@layout/fragment_home_main" />
+
+    <fragment
+        android:id="@+id/fragmentInstructions"
+        android:name="com.univalle.equipo5.view.Instructions"
+        tools:layout="@layout/fragment_instructions" />
+
+</navigation>
