@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
@@ -50,18 +52,22 @@ class Challenge : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Crear una lista de datos
-        val challengeList = listOf(
+        val challengeList = mutableListOf(
             ChallengeItem("Reto 1: Disfruta de una cerveza"),
-            ChallengeItem("Reto 2: Prueba una cerveza nueva"),
-            ChallengeItem("Reto 3: Disfruta de una cerveza"),
-            // Agrega más retos aquí
+            ChallengeItem("Reto 2: Prueba una cerveza nueva")
         )
 
         // Configura tu RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = ChallengeAdapter(challengeList)
 
+        // Animación para el botón de agregar reto
+        val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+        binding.addChallenge.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+        }
     }
+
 
 
     override fun onDestroyView() {

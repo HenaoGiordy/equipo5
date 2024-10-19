@@ -3,6 +3,7 @@ package com.univalle.equipo5.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +17,9 @@ class ChallengeAdapter(private val challengeList: List<ChallengeItem>) :
 
     // Vista del elemento del RecyclerView
     class ChallengeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val iconChallenge: ImageView = itemView.findViewById(R.id.iconChallenge)
         val descriptionChallenge: TextView = itemView.findViewById(R.id.descriptionChallenge)
+        val editChallenge: ImageView = itemView.findViewById(R.id.editChallenge)
+        val deleteChallenge: ImageView = itemView.findViewById(R.id.deleteChallenge)
     }
 
     // Crear nuevas vistas (invocadas por el layout manager)
@@ -31,6 +33,18 @@ class ChallengeAdapter(private val challengeList: List<ChallengeItem>) :
     override fun onBindViewHolder(holder: ChallengeViewHolder, position: Int) {
         val challengeItem = challengeList[position]
         holder.descriptionChallenge.text = challengeItem.description
+
+        holder.editChallenge.setOnClickListener {
+            val scaleAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.scale_animation)
+            it.startAnimation(scaleAnimation)
+        }
+
+        holder.deleteChallenge.setOnClickListener {
+            val scaleAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.scale_animation)
+            it.startAnimation(scaleAnimation)
+        }
+
+
     }
 
     // Retornar el tamaño de la lista
