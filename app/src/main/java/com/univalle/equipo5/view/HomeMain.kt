@@ -11,11 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [HomeMain.newInstance] factory method to
@@ -23,11 +18,13 @@ private const val ARG_PARAM2 = "param2"
  */
 class HomeMain : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
+    private var isSoundOn: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mediaPlayer = MediaPlayer.create(requireContext(), R.raw.soundpokemon)
         mediaPlayer?.isLooping = true
+        mediaPlayer?.start()
     }
 
     override fun onCreateView(
@@ -50,9 +47,21 @@ class HomeMain : Fragment() {
             // Navegar a la siguiente pantalla o realizar otra acción
         }
 
+        soundIcon.setImageResource(R.drawable.sound)
+
         soundIcon.setOnClickListener {
             it.startAnimation(scaleAnimation)
-            // Navegar a la siguiente pantalla o realizar otra acción
+            if (isSoundOn) {
+                // Si el sonido está encendido, se apaga y cambia el ícono
+                mediaPlayer?.pause()
+                soundIcon.setImageResource(R.drawable.nosound) // Cambia al ícono de sonido apagado
+            } else {
+                // Si el sonido está apagado, se enciende y cambia el ícono
+                mediaPlayer?.start()
+                soundIcon.setImageResource(R.drawable.sound) // Cambia al ícono de sonido encendido
+            }
+            // Cambia el estado del sonido
+            isSoundOn = !isSoundOn
         }
 
         instructionsIcon.setOnClickListener {
@@ -72,11 +81,6 @@ class HomeMain : Fragment() {
         }
 
         return rootView
-    }
-
-    override fun onStart() {
-        super.onStart()
-        mediaPlayer?.start()
     }
 
     override fun onPause() {
@@ -102,22 +106,10 @@ class HomeMain : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeMain.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             HomeMain().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+
             }
     }
 }
