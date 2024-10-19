@@ -52,4 +52,7 @@ dependencies {
 
     //API para el Splash
     implementation(libs.androidx.core.splashscreen)
+
+    // Dependencia para Fragments
+    implementation(libs.androidx.fragment)
 }

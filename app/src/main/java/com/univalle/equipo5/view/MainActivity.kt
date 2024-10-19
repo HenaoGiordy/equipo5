@@ -3,6 +3,8 @@ package com.univalle.equipo5.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.univalle.equipo5.R
 
 class MainActivity : AppCompatActivity() {
@@ -12,5 +14,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         screenSplash.setKeepOnScreenCondition{false}
+
+        supportFragmentManager.commit {
+            replace<HomeMain>(R.id.homeMain)
+            setReorderingAllowed(true)
+            addToBackStack("replacement")
+        }
+
     }
 }
