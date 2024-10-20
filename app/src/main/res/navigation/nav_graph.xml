@@ -21,6 +21,9 @@
         android:id="@+id/instructions"
         android:name="com.univalle.equipo5.view.Instructions"
         android:label="Instructions" />
+        <action
+            android:id="@+id/action_instructions_to_homeMain"
+            app:destination="@+id/homeMain" />
 
     <fragment
         android:id="@+id/challenge"

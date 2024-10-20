@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.univalle.equipo5.R
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +37,19 @@ class Instructions : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_instructions, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Busca el botón en el layout por su ID
+        val backButton = view.findViewById<View>(R.id.backButton)
+
+        // Configura el clic del botón para navegar a HomeMain
+        backButton.setOnClickListener {
+            // Navega a HomeMain usando el NavController
+            findNavController().navigate(R.id.action_instructions_to_homeMain)
+        }
     }
 
     companion object {
