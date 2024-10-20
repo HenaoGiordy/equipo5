@@ -84,10 +84,10 @@ class Challenge : Fragment() {
         // Usa DataBinding para inflar el layout del diálogo
         val bindingDialog = AddChallengeBinding.inflate(LayoutInflater.from(requireContext()))
 
-        // Crear el diálogo
+        // Crear el diálogo y evitar que se cierre al tocar fuera
         val dialog = AlertDialog.Builder(requireContext())
             .setView(bindingDialog.root) // Poner la vista desde DataBinding
-            .setCancelable(true)
+            .setCancelable(false)        // Evitar que se cierre al tocar fuera del diálogo
             .create()
 
         // Configura los elementos de la vista usando el binding
@@ -108,7 +108,7 @@ class Challenge : Fragment() {
 
         // Configuración del botón Cancelar
         bindingDialog.btnCancel.setOnClickListener {
-            dialog.dismiss()
+            dialog.dismiss() // Cerrar el diálogo al cancelar
         }
 
         // Configuración del botón Guardar
@@ -117,14 +117,11 @@ class Challenge : Fragment() {
             if (newChallenge.isNotEmpty()) {
                 challengeList.add(ChallengeItem(newChallenge)) // Agregar el reto a la lista
                 binding.recyclerView.adapter?.notifyDataSetChanged() // Actualizar el RecyclerView
-                dialog.dismiss()
+                dialog.dismiss() // Cerrar el diálogo después de guardar
             }
         }
-
         dialog.show()
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
