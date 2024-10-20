@@ -1,12 +1,15 @@
 package com.univalle.equipo5.view
 
+import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
+import android.widget.Button
+import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
@@ -62,10 +65,10 @@ class Challenge : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = ChallengeAdapter(challengeList)
 
-        // Animación para el botón de agregar reto
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
         binding.addChallenge.setOnClickListener {
             it.startAnimation(scaleAnimation)
+            showAddChallengeDialog(challengeList) // Mostrar el cuadro de diálogo aquí
         }
 
         binding.backButton.setOnClickListener {
@@ -76,6 +79,51 @@ class Challenge : Fragment() {
 
     }
 
+    private fun showAddChallengeDialog(challengeList: MutableList<ChallengeItem>) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_challenge, null)
+        val challengeInput = dialogView.findViewById<EditText>(R.id.etChallenge)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+        val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
+
+        // Crear el diálogo
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        // Deshabilitar el botón de guardar inicialmente y establecer color gris (inhabilitado)
+        btnSave.isEnabled = false
+        btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Usa el color que tengas definido para estado inactivo
+
+        // Habilitar o deshabilitar el botón de guardar y cambiar color dinámicamente
+        challengeInput.addTextChangedListener {
+            val inputText = challengeInput.text.toString()
+            if (inputText.isNotEmpty()) {
+                btnSave.isEnabled = true
+                btnSave.setBackgroundColor(resources.getColor(R.color.orange)) // Cambia el color a naranja cuando esté habilitado
+            } else {
+                btnSave.isEnabled = false
+                btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Cambia el color a gris cuando esté deshabilitado
+            }
+        }
+
+        // Configuración del botón Cancelar
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        // Configuración del botón Guardar
+        btnSave.setOnClickListener {
+            val newChallenge = challengeInput.text.toString()
+            if (newChallenge.isNotEmpty()) {
+                challengeList.add(ChallengeItem(newChallenge)) // Agregar el nuevo reto a la lista
+                binding.recyclerView.adapter?.notifyDataSetChanged() // Actualizar el RecyclerView
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
 
 
     override fun onDestroyView() {
