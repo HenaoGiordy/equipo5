@@ -43,10 +43,6 @@ class HomeMain : Fragment() {
 
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
-        binding.rate.setOnClickListener {
-            it.startAnimation(scaleAnimation)
-        }
-
         binding.sound.setOnClickListener {
             it.startAnimation(scaleAnimation)
             if (isSoundOn) {
@@ -77,6 +73,7 @@ class HomeMain : Fragment() {
         }
 
         binding.rate.setOnClickListener {
+            it.startAnimation(scaleAnimation)
             saveSoundState()
             findNavController().navigate(R.id.action_homeMain_to_rate)
         }
