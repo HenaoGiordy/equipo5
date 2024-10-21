@@ -58,24 +58,35 @@ class HomeMain : Fragment() {
         binding.instructions.setOnClickListener {
             it.startAnimation(scaleAnimation)
             saveSoundState()
-            findNavController().navigate(R.id.action_homeMain_to_instructions)
+            it.postDelayed({
+                findNavController().navigate(R.id.action_homeMain_to_instructions)
+            }, 200)
+
         }
 
         binding.add.setOnClickListener {
             it.startAnimation(scaleAnimation)
             saveSoundState()
-            findNavController().navigate(R.id.action_homeMain_to_challenge)
+            it.postDelayed({
+                findNavController().navigate(R.id.action_homeMain_to_challenge)
+            }, 200) // retraso para ver la animación de toque
         }
+
 
         binding.share.setOnClickListener {
             saveSoundState()
             it.startAnimation(scaleAnimation)
+            it.postDelayed({
+
+            }, 200)
         }
 
         binding.rate.setOnClickListener {
             it.startAnimation(scaleAnimation)
             saveSoundState()
-            findNavController().navigate(R.id.action_homeMain_to_rate)
+            it.postDelayed({
+                findNavController().navigate(R.id.action_homeMain_to_rate)
+            }, 200)
         }
     }
 
