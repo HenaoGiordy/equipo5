@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -54,7 +55,6 @@ class Challenge : Fragment() {
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -66,9 +66,6 @@ class Challenge : Fragment() {
 
         // Configura tu RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-
-        binding.recyclerView.adapter = ChallengeAdapter(challengeList)
-
 
         binding.recyclerView.adapter = ChallengeAdapter(challengeList) { challenge ->
             showDeleteDialog(challenge) // Llama al diálogo al hacer clic en eliminar
@@ -116,17 +113,6 @@ class Challenge : Fragment() {
             }
         }
 
-    // Función para mostrar el cuadro de diálogo de Eliminar
-    private fun showDeleteDialog(challenge: ChallengeItem) {
-        val dialog = DeleteChallengeDialog(challenge.description) {
-            // Aquí se elimina el reto de la lista
-            Toast.makeText(context, "Reto eliminado: ${challenge.description}", Toast.LENGTH_SHORT).show()
-            // Lógica para eliminar el reto de la lista o base de datos
-        }
-        dialog.isCancelable = false
-        dialog.show(parentFragmentManager, "DeleteChallengeDialog")
-    }
-
 
         // Configuración del botón Cancelar
         bindingDialog.btnCancel.setOnClickListener {
@@ -143,6 +129,17 @@ class Challenge : Fragment() {
             }
         }
         dialog.show()
+    }
+
+    // Función para mostrar el cuadro de diálogo de Eliminar
+    private fun showDeleteDialog(challenge: ChallengeItem) {
+        val dialog = DeleteChallengeDialog(challenge.description) {
+            // Aquí se elimina el reto de la lista
+            Toast.makeText(context, "Reto eliminado: ${challenge.description}", Toast.LENGTH_SHORT).show()
+            // Lógica para eliminar el reto de la lista o base de datos
+        }
+        dialog.isCancelable = false
+        dialog.show(parentFragmentManager, "DeleteChallengeDialog")
     }
 
     override fun onDestroyView() {
