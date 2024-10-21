@@ -1,15 +1,19 @@
 package com.univalle.equipo5.view
 
+import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Toast
+import android.widget.Button
+import android.widget.EditText
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
+import com.univalle.equipo5.databinding.AddChallengeBinding
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import com.univalle.equipo5.view.model.ChallengeItem
@@ -62,13 +66,19 @@ class Challenge : Fragment() {
 
         // Configura tu RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
+
+        binding.recyclerView.adapter = ChallengeAdapter(challengeList)
+
+
         binding.recyclerView.adapter = ChallengeAdapter(challengeList) { challenge ->
             showDeleteDialog(challenge) // Llama al diálogo al hacer clic en eliminar
         }
         // Animación para el botón de agregar reto
+
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
         binding.addChallenge.setOnClickListener {
             it.startAnimation(scaleAnimation)
+            showAddChallengeDialog(challengeList) // Mostrar el cuadro de diálogo aquí
         }
 
         binding.backButton.setOnClickListener {
@@ -78,6 +88,33 @@ class Challenge : Fragment() {
         }
 
     }
+
+
+    private fun showAddChallengeDialog(challengeList: MutableList<ChallengeItem>) {
+        // Usa DataBinding para inflar el layout del diálogo
+        val bindingDialog = AddChallengeBinding.inflate(LayoutInflater.from(requireContext()))
+
+        // Crear el diálogo y evitar que se cierre al tocar fuera
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(bindingDialog.root) // Poner la vista desde DataBinding
+            .setCancelable(false)        // Evitar que se cierre al tocar fuera del diálogo
+            .create()
+
+        // Configura los elementos de la vista usando el binding
+        bindingDialog.btnSave.isEnabled = false
+        bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Estado inactivo
+
+        // Habilitar o deshabilitar el botón de guardar dinámicamente
+        bindingDialog.etChallenge.addTextChangedListener {
+            val inputText = bindingDialog.etChallenge.text.toString()
+            if (inputText.isNotEmpty()) {
+                bindingDialog.btnSave.isEnabled = true
+                bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.orange)) // Habilitado
+            } else {
+                bindingDialog.btnSave.isEnabled = false
+                bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Deshabilitado
+            }
+        }
 
     // Función para mostrar el cuadro de diálogo de Eliminar
     private fun showDeleteDialog(challenge: ChallengeItem) {
@@ -90,6 +127,23 @@ class Challenge : Fragment() {
         dialog.show(parentFragmentManager, "DeleteChallengeDialog")
     }
 
+
+        // Configuración del botón Cancelar
+        bindingDialog.btnCancel.setOnClickListener {
+            dialog.dismiss() // Cerrar el diálogo al cancelar
+        }
+
+        // Configuración del botón Guardar
+        bindingDialog.btnSave.setOnClickListener {
+            val newChallenge = bindingDialog.etChallenge.text.toString()
+            if (newChallenge.isNotEmpty()) {
+                challengeList.add(ChallengeItem(newChallenge)) // Agregar el reto a la lista
+                binding.recyclerView.adapter?.notifyDataSetChanged() // Actualizar el RecyclerView
+                dialog.dismiss() // Cerrar el diálogo después de guardar
+            }
+        }
+        dialog.show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
