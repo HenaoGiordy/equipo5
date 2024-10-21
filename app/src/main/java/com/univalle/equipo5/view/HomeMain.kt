@@ -77,6 +77,10 @@ class HomeMain : Fragment() {
             it.startAnimation(scaleAnimation)
             // Navegar a la siguiente pantalla o realizar otra acción
         }
+
+        binding.rate.setOnClickListener{
+            findNavController().navigate(R.id.action_homeMain_to_rate)
+        }
     }
 
     override fun onPause() {
