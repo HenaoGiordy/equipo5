@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.AddChallengeBinding
+import com.univalle.equipo5.databinding.EditChallengeBinding
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import com.univalle.equipo5.view.model.ChallengeItem
@@ -37,6 +38,9 @@ class Challenge : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    // Mueve la lista de retos aquí
+    private val challengeList = mutableListOf<ChallengeItem>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,30 +56,29 @@ class Challenge : Fragment() {
         // Inflar el layout usando DataBinding
         _binding = FragmentChallengeBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Crear una lista de datos
-        val challengeList = mutableListOf(
-            ChallengeItem("Reto 1: Disfruta de una cerveza"),
-            ChallengeItem("Reto 2: Prueba una cerveza nueva")
-        )
+        // Inicializar la lista de retos
+        challengeList.add(ChallengeItem("Reto 1: Disfruta de una cerveza"))
+        challengeList.add(ChallengeItem("Reto 2: Prueba una cerveza nueva"))
 
         // Configura tu RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
-        binding.recyclerView.adapter = ChallengeAdapter(challengeList) { challenge ->
+        binding.recyclerView.adapter = ChallengeAdapter(challengeList, { challenge ->
             showDeleteDialog(challenge) // Llama al diálogo al hacer clic en eliminar
-        }
-        // Animación para el botón de agregar reto
+        }, { challenge ->
+            showEditChallengeDialog(challenge) // Llama al diálogo al hacer clic en editar
+        })
 
+        // Animación para el botón de agregar reto
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
         binding.addChallenge.setOnClickListener {
             it.startAnimation(scaleAnimation)
-            showAddChallengeDialog(challengeList) // Mostrar el cuadro de diálogo aquí
+            showAddChallengeDialog() // Mostrar el cuadro de diálogo aquí
         }
 
         binding.backButton.setOnClickListener {
@@ -83,53 +86,41 @@ class Challenge : Fragment() {
             // vuelve a homeMain
             findNavController().navigate(R.id.action_challenge_to_homeMain)
         }
-
     }
 
-
-    private fun showAddChallengeDialog(challengeList: MutableList<ChallengeItem>) {
-        // Usa DataBinding para inflar el layout del diálogo
+    private fun showAddChallengeDialog() {
         val bindingDialog = AddChallengeBinding.inflate(LayoutInflater.from(requireContext()))
-
-        // Crear el diálogo y evitar que se cierre al tocar fuera
         val dialog = AlertDialog.Builder(requireContext())
-            .setView(bindingDialog.root) // Poner la vista desde DataBinding
-            .setCancelable(false)        // Evitar que se cierre al tocar fuera del diálogo
+            .setView(bindingDialog.root)
+            .setCancelable(false)
             .create()
 
-        // Configura los elementos de la vista usando el binding
         bindingDialog.btnSave.isEnabled = false
-        bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Estado inactivo
+        bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray))
 
-        // Habilitar o deshabilitar el botón de guardar dinámicamente
         bindingDialog.etChallenge.addTextChangedListener {
             val inputText = bindingDialog.etChallenge.text.toString()
-            if (inputText.isNotEmpty()) {
-                bindingDialog.btnSave.isEnabled = true
-                bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.orange)) // Habilitado
-            } else {
-                bindingDialog.btnSave.isEnabled = false
-                bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Deshabilitado
-            }
+            bindingDialog.btnSave.isEnabled = inputText.isNotEmpty()
+            bindingDialog.btnSave.setBackgroundColor(
+                if (inputText.isNotEmpty()) resources.getColor(R.color.orange) else resources.getColor(R.color.gray)
+            )
         }
 
-
-        // Configuración del botón Cancelar
         bindingDialog.btnCancel.setOnClickListener {
-            dialog.dismiss() // Cerrar el diálogo al cancelar
+            dialog.dismiss()
         }
 
-        // Configuración del botón Guardar
         bindingDialog.btnSave.setOnClickListener {
             val newChallenge = bindingDialog.etChallenge.text.toString()
             if (newChallenge.isNotEmpty()) {
-                challengeList.add(ChallengeItem(newChallenge)) // Agregar el reto a la lista
-                binding.recyclerView.adapter?.notifyDataSetChanged() // Actualizar el RecyclerView
-                dialog.dismiss() // Cerrar el diálogo después de guardar
+                challengeList.add(ChallengeItem(newChallenge))
+                binding.recyclerView.adapter?.notifyDataSetChanged()
+                dialog.dismiss()
             }
         }
         dialog.show()
     }
+
 
     // Función para mostrar el cuadro de diálogo de Eliminar
     private fun showDeleteDialog(challenge: ChallengeItem) {
@@ -141,6 +132,39 @@ class Challenge : Fragment() {
         dialog.isCancelable = false
         dialog.show(parentFragmentManager, "DeleteChallengeDialog")
     }
+
+    private fun showEditChallengeDialog(challengeItem: ChallengeItem) {
+        // Usa DataBinding para inflar el layout del diálogo
+        val bindingDialog = EditChallengeBinding.inflate(LayoutInflater.from(requireContext()))
+
+        // Crear el diálogo y evitar que se cierre al tocar fuera
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(bindingDialog.root) // Poner la vista desde DataBinding
+            .setCancelable(false)        // Evitar que se cierre al tocar fuera del diálogo
+            .create()
+
+        // Configurar el EditText con la descripción actual
+        bindingDialog.etChallenge.setText(challengeItem.description)
+
+        // Configuración del botón Cancelar
+        bindingDialog.btnEditCancel.setOnClickListener {
+            dialog.dismiss() // Cerrar el diálogo al cancelar
+        }
+
+        // Configuración del botón Guardar
+        bindingDialog.btnEditSave.setOnClickListener {
+            val updatedChallenge = bindingDialog.etChallenge.text.toString()
+            if (updatedChallenge.isNotEmpty()) {
+                // Actualiza el elemento en la lista
+                challengeList[challengeList.indexOf(challengeItem)] = ChallengeItem(updatedChallenge) // Actualiza el desafío en la lista
+                binding.recyclerView.adapter?.notifyDataSetChanged() // Actualiza el RecyclerView
+                dialog.dismiss() // Cerrar el diálogo después de guardar
+            }
+        }
+
+        dialog.show()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
