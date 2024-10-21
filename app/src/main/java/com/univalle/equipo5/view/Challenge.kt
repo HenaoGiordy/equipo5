@@ -18,6 +18,7 @@ import com.univalle.equipo5.databinding.FragmentChallengeBinding
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import com.univalle.equipo5.view.model.ChallengeItem
 
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -53,6 +54,7 @@ class Challenge : Fragment() {
 
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,7 +66,14 @@ class Challenge : Fragment() {
 
         // Configura tu RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
+
         binding.recyclerView.adapter = ChallengeAdapter(challengeList)
+
+
+        binding.recyclerView.adapter = ChallengeAdapter(challengeList) { challenge ->
+            showDeleteDialog(challenge) // Llama al diálogo al hacer clic en eliminar
+        }
+        // Animación para el botón de agregar reto
 
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
         binding.addChallenge.setOnClickListener {
@@ -79,6 +88,7 @@ class Challenge : Fragment() {
         }
 
     }
+
 
     private fun showAddChallengeDialog(challengeList: MutableList<ChallengeItem>) {
         // Usa DataBinding para inflar el layout del diálogo
@@ -105,6 +115,18 @@ class Challenge : Fragment() {
                 bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray)) // Deshabilitado
             }
         }
+
+    // Función para mostrar el cuadro de diálogo de Eliminar
+    private fun showDeleteDialog(challenge: ChallengeItem) {
+        val dialog = DeleteChallengeDialog(challenge.description) {
+            // Aquí se elimina el reto de la lista
+            Toast.makeText(context, "Reto eliminado: ${challenge.description}", Toast.LENGTH_SHORT).show()
+            // Lógica para eliminar el reto de la lista o base de datos
+        }
+        dialog.isCancelable = false
+        dialog.show(parentFragmentManager, "DeleteChallengeDialog")
+    }
+
 
         // Configuración del botón Cancelar
         bindingDialog.btnCancel.setOnClickListener {
