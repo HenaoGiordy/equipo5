@@ -1,5 +1,6 @@
 package com.univalle.equipo5.view
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -44,43 +45,48 @@ class HomeMain : Fragment() {
 
         binding.rate.setOnClickListener {
             it.startAnimation(scaleAnimation)
-            // Navegar a la siguiente pantalla o realizar otra acción
         }
-
-        binding.sound.setImageResource(R.drawable.sound)
 
         binding.sound.setOnClickListener {
             it.startAnimation(scaleAnimation)
             if (isSoundOn) {
                 mediaPlayer?.pause()
-                binding.sound.setImageResource(R.drawable.nosound) // Cambia al ícono de sonido apagado
+                binding.sound.setImageResource(R.drawable.nosound)
             } else {
                 mediaPlayer?.start()
-                binding.sound.setImageResource(R.drawable.sound) // Cambia al ícono de sonido encendido
+                binding.sound.setImageResource(R.drawable.sound)
             }
             isSoundOn = !isSoundOn
         }
 
         binding.instructions.setOnClickListener {
             it.startAnimation(scaleAnimation)
-            // Navegar a la fragment Instructions
+            saveSoundState()
             findNavController().navigate(R.id.action_homeMain_to_instructions)
         }
 
         binding.add.setOnClickListener {
             it.startAnimation(scaleAnimation)
-            // Navegar a la siguiente pantalla o realizar otra acción
+            saveSoundState()
             findNavController().navigate(R.id.action_homeMain_to_challenge)
         }
 
         binding.share.setOnClickListener {
+            saveSoundState()
             it.startAnimation(scaleAnimation)
-            // Navegar a la siguiente pantalla o realizar otra acción
         }
 
-        binding.rate.setOnClickListener{
+        binding.rate.setOnClickListener {
+            saveSoundState()
             findNavController().navigate(R.id.action_homeMain_to_rate)
         }
+    }
+
+    private fun saveSoundState() {
+        val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isSoundOn", isSoundOn)
+        editor.apply()
     }
 
     override fun onPause() {
@@ -88,9 +94,14 @@ class HomeMain : Fragment() {
         mediaPlayer?.pause()
     }
 
+    private fun getSoundState(): Boolean {
+        val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("isSoundOn", true) // Valor por defecto es true (sonido encendido)
+    }
+
     override fun onResume() {
         super.onResume()
-        // Reinicia el sonido si estaba encendido
+        isSoundOn = getSoundState()
         if (isSoundOn) {
             mediaPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
@@ -98,6 +109,11 @@ class HomeMain : Fragment() {
             mediaPlayer?.pause()
             binding.sound.setImageResource(R.drawable.nosound)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isSoundOn", isSoundOn)
     }
 
     override fun onDestroyView() {
