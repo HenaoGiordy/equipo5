@@ -23,7 +23,7 @@ class HomeMain : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.soundpokemon)
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.soundapp)
         mediaPlayer?.isLooping = true
         mediaPlayer?.start()
     }
@@ -77,6 +77,7 @@ class HomeMain : Fragment() {
 
         binding.share.setOnClickListener { it ->
             it.startAnimation(scaleAnimation)
+            saveSoundState()
             val shareTitle = "App pico botella"
             val shareSlogan = "Solo los valientes lo juegan !!"
             val shareUrl = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp"
