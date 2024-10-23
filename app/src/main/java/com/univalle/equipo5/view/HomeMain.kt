@@ -11,12 +11,11 @@ import android.view.ViewGroup
 import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.univalle.equipo5.R
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 import kotlin.random.Random
 
@@ -66,8 +65,8 @@ class HomeMain : Fragment() {
         val countdownText = binding.countdownText
         startCountdownTimer(countdownText)
 
+        // Configuración del botón de sonido
         binding.sound.setImageResource(R.drawable.sound)
-        
         binding.sound.setOnClickListener {
             if (isSoundOn) {
                 mediaPlayer?.pause()
@@ -78,6 +77,9 @@ class HomeMain : Fragment() {
             }
             isSoundOn = !isSoundOn
         }
+
+        // Configurar eventos para otros botones
+        setupOtherButtons()
     }
 
     // Función para hacer parpadear el botón
@@ -86,14 +88,6 @@ class HomeMain : Fragment() {
             duration = 500 // Velocidad del parpadeo
             repeatMode = Animation.REVERSE
             repeatCount = Animation.INFINITE
-
-        binding.instructions.setOnClickListener {
-            it.startAnimation(scaleAnimation)
-            saveSoundState()
-            it.postDelayed({
-                findNavController().navigate(R.id.action_homeMain_to_instructions)
-            }, 200)
-
         }
         binding.blinkingButton.startAnimation(blinkAnimation)
     }
@@ -139,71 +133,46 @@ class HomeMain : Fragment() {
                 binding.blinkingButton.visibility = View.VISIBLE
             }
         }.start()
-        
+    }
+
+    // Configuración de botones adicionales como instrucciones, compartir, agregar, etc.
+    private fun setupOtherButtons() {
+        // Animación de escala
+        val scaleAnimation = ScaleAnimation(
+            0.95f, 1.0f, 0.95f, 1.0f, // Escalar ligeramente
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            duration = 150
+            fillAfter = true
+        }
+
+        // Botón para instrucciones
+        binding.instructions.setOnClickListener {
+            it.startAnimation(scaleAnimation)
+            saveSoundState()
+            it.postDelayed({
+                findNavController().navigate(R.id.action_homeMain_to_instructions)
+            }, 200)
+        }
+
+        // Botón para agregar desafío
         binding.add.setOnClickListener {
             it.startAnimation(scaleAnimation)
             saveSoundState()
             it.postDelayed({
                 findNavController().navigate(R.id.action_homeMain_to_challenge)
-            }, 200) // retraso para ver la animación de toque
+            }, 200)
         }
 
-
+        // Botón para compartir
         binding.share.setOnClickListener { it ->
             it.startAnimation(scaleAnimation)
             saveSoundState()
-            val shareTitle = "App pico botella"
-            val shareSlogan = "Solo los valientes lo juegan !!"
-            val shareUrl = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp"
-            val shareContent = "$shareTitle\n$shareSlogan\n$shareUrl"
-
-            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, shareContent)
-            }
-
-            // Lista de paquetes permitidos
-            val allowedPackages = listOf(
-                "com.whatsapp",
-                "com.facebook.katana",
-                "com.twitter.android",
-                "com.instagram.android",
-                "com.zhiliaoapp.musically",
-                "com.ss.android.ugc.trill"
-            )
-
-            val packageManager = requireContext().packageManager
-            val resolveInfoList = packageManager.queryIntentActivities(shareIntent, 0)
-
-            val filteredIntents = resolveInfoList
-                .filter { resolveInfo ->
-                    allowedPackages.contains(resolveInfo.activityInfo.packageName)
-                }
-                .map { resolveInfo ->
-                    Intent(shareIntent).apply {
-                        setPackage(resolveInfo.activityInfo.packageName)
-                    }
-                }
-
-            if (filteredIntents.isNotEmpty()) {
-                val chooserIntent = Intent.createChooser(
-                    filteredIntents[0],
-                    "Compartir vía"
-                )
-
-                val remainingIntents = filteredIntents.subList(1, filteredIntents.size).toTypedArray()
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, remainingIntents)
-
-                startActivity(chooserIntent)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "No se encontraron aplicaciones para compartir",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            shareAppContent()
         }
 
+        // Botón para calificar
         binding.rate.setOnClickListener {
             it.startAnimation(scaleAnimation)
             saveSoundState()
@@ -211,14 +180,45 @@ class HomeMain : Fragment() {
                 findNavController().navigate(R.id.action_homeMain_to_rate)
             }, 200)
         }
-        
+    }
+
+    // Función para compartir contenido de la app
+    private fun shareAppContent() {
+        val shareTitle = "App pico botella"
+        val shareSlogan = "Solo los valientes lo juegan !!"
+        val shareUrl = "https://play.google.com/store/apps/details?id=com.nequi.MobileApp"
+        val shareContent = "$shareTitle\n$shareSlogan\n$shareUrl"
+
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, shareContent)
+        }
+
+        // Lista de paquetes permitidos
+        val allowedPackages = listOf(
+            "com.whatsapp", "com.facebook.katana", "com.twitter.android",
+            "com.instagram.android", "com.zhiliaoapp.musically", "com.ss.android.ugc.trill"
+        )
+
+        val packageManager = requireContext().packageManager
+        val resolveInfoList = packageManager.queryIntentActivities(shareIntent, 0)
+
+        val filteredIntents = resolveInfoList
+            .filter { allowedPackages.contains(it.activityInfo.packageName) }
+            .map { Intent(shareIntent).apply { setPackage(it.activityInfo.packageName) } }
+
+        if (filteredIntents.isNotEmpty()) {
+            val chooserIntent = Intent.createChooser(filteredIntents[0], "Compartir vía")
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, filteredIntents.subList(1, filteredIntents.size).toTypedArray())
+            startActivity(chooserIntent)
+        } else {
+            Toast.makeText(requireContext(), "No se encontraron aplicaciones para compartir", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun saveSoundState() {
         val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isSoundOn", isSoundOn)
-        editor.apply()
+        sharedPreferences.edit().putBoolean("isSoundOn", isSoundOn).apply()
     }
 
     override fun onPause() {
@@ -233,9 +233,7 @@ class HomeMain : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val isAppRunning = getSoundState()
-        isSoundOn = isAppRunning
-
+        isSoundOn = getSoundState()
         if (isSoundOn) {
             mediaPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
@@ -245,8 +243,6 @@ class HomeMain : Fragment() {
         }
     }
 
-
-
     private fun getSoundState(): Boolean {
         val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean("isSoundOn", true) // Valor por defecto es true (sonido encendido)
@@ -254,7 +250,6 @@ class HomeMain : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        
         if (isSoundOn) {
             mediaPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
@@ -278,10 +273,5 @@ class HomeMain : Fragment() {
         super.onDestroy()
         mediaPlayer?.release()
         mediaPlayer = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = HomeMain().apply {}
     }
 }
