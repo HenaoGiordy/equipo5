@@ -88,6 +88,7 @@ class HomeMain : Fragment() {
                 putExtra(Intent.EXTRA_TEXT, shareContent)
             }
 
+
             // Lista de paquetes permitidos
             val allowedPackages = listOf(
                 "com.whatsapp",
