@@ -43,6 +43,8 @@
                     android:layout_height="50dp"
                     android:padding="8dp"
                     android:src="@drawable/rate"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     app:tint="@color/orange" />
 
                 <ImageView
@@ -51,6 +53,8 @@
                     android:layout_height="50dp"
                     android:padding="8dp"
                     android:src="@drawable/sound"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     app:tint="@color/orange" />
 
                 <ImageView
@@ -59,6 +63,8 @@
                     android:layout_height="50dp"
                     android:padding="8dp"
                     android:src="@drawable/instructions"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     app:tint="@color/orange" />
 
                 <ImageView
@@ -67,6 +73,8 @@
                     android:layout_height="50dp"
                     android:padding="8dp"
                     android:src="@drawable/add"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     app:tint="@color/orange" />
 
                 <ImageView
@@ -75,6 +83,8 @@
                     android:layout_height="50dp"
                     android:padding="8dp"
                     android:src="@drawable/share"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     app:tint="@color/orange" />
 
             </LinearLayout>

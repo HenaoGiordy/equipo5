@@ -5,4 +5,10 @@
     <string name="background_image_desc">Fondo de madera</string>
     <string name="bottle_desc">Botella del juego</string>
     <string name="press_me">Presióname</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="guardar">Guardar</string>
+    <string name="escriba_el_reto">Escriba el reto</string>
+    <string name="agregar_reto">Agregar reto</string>
+    <string name="editar_reto">Editar reto</string>
+    <string name="editar_reto_descripcion">Editar reto descripcion</string>
 </resources>

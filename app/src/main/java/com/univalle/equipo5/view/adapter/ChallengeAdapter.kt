@@ -12,8 +12,11 @@ import com.univalle.equipo5.view.model.ChallengeItem
 
 // ChallengeAdapter.kt
 
-class ChallengeAdapter(private val challengeList: List<ChallengeItem>) :
-    RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
+class ChallengeAdapter(
+    private val challengeList: List<ChallengeItem>,
+    private val onDeleteChallenge: (ChallengeItem) -> Unit, // Callback para manejar la eliminación
+    private val onEditChallenge: (ChallengeItem) -> Unit // Callback para manejar la edición
+) : RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
 
     // Vista del elemento del RecyclerView
     class ChallengeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -34,17 +37,22 @@ class ChallengeAdapter(private val challengeList: List<ChallengeItem>) :
         val challengeItem = challengeList[position]
         holder.descriptionChallenge.text = challengeItem.description
 
+
+        // Animación para el botón de editar
         holder.editChallenge.setOnClickListener {
             val scaleAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.scale_animation)
             it.startAnimation(scaleAnimation)
+            onEditChallenge(challengeItem) // Llama al callback de edición
         }
 
+        // Animación y lógica para el botón de eliminar
         holder.deleteChallenge.setOnClickListener {
             val scaleAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.scale_animation)
             it.startAnimation(scaleAnimation)
+
+            // Llama al callback de eliminación con el elemento ChallengeItem correspondiente
+            onDeleteChallenge(challengeItem)
         }
-
-
     }
 
     // Retornar el tamaño de la lista
