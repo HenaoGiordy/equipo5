@@ -6,8 +6,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue"
         tools:context=".view.HomeMain">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/wood_bg"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/background_image_desc" />
 
         <!-- Aquí incluyes el Toolbar personalizado -->
         <androidx.appcompat.widget.Toolbar
@@ -75,13 +81,39 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+        <ImageView
+            android:id="@+id/bottle_image"
+            android:layout_width="130dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/bottle_desc"
+            android:src="@drawable/bottle_main" />
+
+        <!-- Contador en el centro de la botella -->
         <TextView
+            android:id="@+id/countdown_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="25sp"
-            android:textColor="@color/white"
-            android:text="Home" />
+            android:text="3"
+            android:textColor="@android:color/white"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="8dp" />
+
+        <!-- Botón -->
+        <Button
+            android:id="@+id/blinking_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="128dp"
+            android:text="@string/press_me"
+            android:backgroundTint="@color/orange"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:padding="16dp" />
 
     </FrameLayout>
 </layout>
