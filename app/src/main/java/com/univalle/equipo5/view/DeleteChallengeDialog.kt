@@ -14,22 +14,21 @@ class DeleteChallengeDialog(
     private val onConfirm: () -> Unit // Función lambda que se ejecuta al presionar "SI"
 ) : DialogFragment() {
 
-    private var _binding: DialogDeleteChallengeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: DialogDeleteChallengeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Usamos DataBindingUtil para inflar el layout del diálogo
-        _binding = DataBindingUtil.inflate(inflater, R.layout.dialog_delete_challenge, container, false)
+        // Usar DataBindingUtil para inflar el layout del diálogo
+        binding = DataBindingUtil.inflate(inflater, R.layout.dialog_delete_challenge, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configurar la descripción del reto usando DataBinding
+        // Asignar la descripción del reto al DataBinding
         binding.challengeDescription = challengeDescription
 
         // Acción al hacer clic en el botón "NO"
@@ -42,10 +41,5 @@ class DeleteChallengeDialog(
             onConfirm()  // Llama a la función de confirmación
             dismiss()  // Cierra el diálogo
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
