@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
@@ -17,6 +18,7 @@ import com.univalle.equipo5.databinding.EditChallengeBinding
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import data.entities.Challenge
+import data.viewModel.ChallengeViewModel
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +34,7 @@ private const val ARG_PARAM2 = "param2"
 class ChallengeFragment : Fragment() {
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: ChallengeViewModel by activityViewModels()
 
     // Mueve la lista de retos aquí
     private val challengeList = mutableListOf<Challenge>()
@@ -83,37 +86,45 @@ class ChallengeFragment : Fragment() {
         val bindingDialog = AddChallengeBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog = AlertDialog.Builder(requireContext())
             .setView(bindingDialog.root)
-            .setCancelable(false)
+            .setCancelable(false) // Evita que el diálogo se cierre al tocar fuera
             .create()
 
+        // Deshabilitar botón guardar inicialmente
         bindingDialog.btnSave.isEnabled = false
         bindingDialog.btnSave.setBackgroundColor(resources.getColor(R.color.gray))
 
+        // Listener para habilitar/deshabilitar el botón de guardado
         bindingDialog.etChallenge.addTextChangedListener {
             val inputText = bindingDialog.etChallenge.text.toString()
-            bindingDialog.btnSave.isEnabled = inputText.isNotEmpty()
+            bindingDialog.btnSave.isEnabled = inputText.isNotEmpty() // Habilita si no está vacío
             bindingDialog.btnSave.setBackgroundColor(
                 if (inputText.isNotEmpty()) resources.getColor(R.color.orange) else resources.getColor(R.color.gray)
             )
         }
 
+        // Acciones para el botón Cancelar
         bindingDialog.btnCancel.setOnClickListener {
-            dialog.dismiss()
+            dialog.dismiss() // Cierra el diálogo al cancelar
         }
 
+        // Acciones para el botón Guardar
         bindingDialog.btnSave.setOnClickListener {
-            val newChallenge = bindingDialog.etChallenge.text.toString()
-            if (newChallenge.isNotEmpty()) {
-                challengeList.add(Challenge(
-                    1,
-                    description = TODO()
-                ))
-                binding.recyclerView.adapter?.notifyDataSetChanged()
-                dialog.dismiss()
+            val newChallengeDescription = bindingDialog.etChallenge.text.toString()
+
+            if (newChallengeDescription.isNotEmpty()) {
+                // Crear nuevo reto
+                val newChallenge = Challenge(
+                    description = newChallengeDescription
+                )
+
+                // Insertar reto a través del ViewModel
+                viewModel.insertChallenge(newChallenge) // Usar el ViewModel para manejar la inserción
+                dialog.dismiss() // Cierra el diálogo después de guardar
             }
         }
         dialog.show()
     }
+
 
 
     // Función para mostrar el cuadro de diálogo de Eliminar
