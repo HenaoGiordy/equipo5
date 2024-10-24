@@ -14,12 +14,20 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
+import android.os.CountDownTimer
+import android.view.animation.*
+import android.widget.ImageView
+import android.widget.TextView
+import kotlin.random.Random
 
 class HomeMain : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
     private var isSoundOn: Boolean = true
     private var _binding: FragmentHomeMainBinding? = null
     private val binding get() = _binding!!
+
+    // Ángulo en el que se detuvo la botella anteriormente
+    private var currentAngle = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +50,21 @@ class HomeMain : Fragment() {
 
         val toolbar = binding.customToolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+
+        // Configurar el botón parpadeante
+        startBlinkingButton()
+
+        // Configurar el evento del botón para girar la botella
+        binding.blinkingButton.setOnClickListener {
+            // Ocultar el botón y detener el parpadeo
+            it.clearAnimation()
+            it.visibility = View.INVISIBLE
+            startBottleSpin(binding.bottleImage)
+        }
+
+        // Configuración del contador regresivo en el centro de la botella
+        val countdownText = binding.countdownText
+        startCountdownTimer(countdownText)
 
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
@@ -138,6 +161,59 @@ class HomeMain : Fragment() {
                 findNavController().navigate(R.id.action_homeMain_to_rate)
             }, 200)
         }
+    }
+
+    // Función para hacer parpadear el botón
+    private fun startBlinkingButton() {
+        val blinkAnimation = AlphaAnimation(0.0f, 1.0f).apply {
+            duration = 500 // Velocidad del parpadeo
+            repeatMode = Animation.REVERSE
+            repeatCount = Animation.INFINITE
+        }
+        binding.blinkingButton.startAnimation(blinkAnimation)
+    }
+
+    // Función para hacer girar la botella
+    private fun startBottleSpin(bottleImage: ImageView) {
+        val randomAngle = Random.nextInt(360) + 720 // Rotación aleatoria
+        val newAngle = currentAngle + randomAngle
+
+        val rotateAnimation = RotateAnimation(
+            currentAngle, newAngle,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotateAnimation.duration = Random.nextLong(3000, 5000)
+        rotateAnimation.fillAfter = true
+        bottleImage.startAnimation(rotateAnimation)
+
+        currentAngle = newAngle % 360
+
+        // Iniciar el contador regresivo
+        startCountdownTimer(binding.countdownText)
+
+        // Reaparecer el botón al finalizar la cuenta regresiva
+        rotateAnimation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation) {}
+            override fun onAnimationEnd(animation: Animation) {
+                startBlinkingButton()
+            }
+            override fun onAnimationRepeat(animation: Animation) {}
+        })
+    }
+
+    // Función para iniciar el contador regresivo
+    private fun startCountdownTimer(countdownText: TextView) {
+        object : CountDownTimer(3000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                countdownText.text = (millisUntilFinished / 1000).toString()
+            }
+
+            override fun onFinish() {
+                countdownText.text = "0"
+                binding.blinkingButton.visibility = View.VISIBLE
+            }
+        }.start()
     }
 
     private fun saveSoundState() {
