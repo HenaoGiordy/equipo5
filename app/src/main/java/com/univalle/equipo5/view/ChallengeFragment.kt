@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -18,7 +16,7 @@ import com.univalle.equipo5.databinding.AddChallengeBinding
 import com.univalle.equipo5.databinding.EditChallengeBinding
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
-import com.univalle.equipo5.view.model.ChallengeItem
+import data.entities.Challenge
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,12 +29,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [Challenge.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Challenge : Fragment() {
+class ChallengeFragment : Fragment() {
     private var _binding: FragmentChallengeBinding? = null
     private val binding get() = _binding!!
 
     // Mueve la lista de retos aquí
-    private val challengeList = mutableListOf<ChallengeItem>()
+    private val challengeList = mutableListOf<Challenge>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +53,8 @@ class Challenge : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Inicializar la lista de retos
-        challengeList.add(ChallengeItem("Reto 1: Disfruta de una cerveza"))
-        challengeList.add(ChallengeItem("Reto 2: Prueba una cerveza nueva"))
+        challengeList.add(Challenge(1,"Reto 1: Disfruta de una cerveza"))
+        challengeList.add(Challenge(2,"Reto 2: Prueba una cerveza nueva"))
 
         // Configura tu RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -106,7 +104,10 @@ class Challenge : Fragment() {
         bindingDialog.btnSave.setOnClickListener {
             val newChallenge = bindingDialog.etChallenge.text.toString()
             if (newChallenge.isNotEmpty()) {
-                challengeList.add(ChallengeItem(newChallenge))
+                challengeList.add(Challenge(
+                    1,
+                    description = TODO()
+                ))
                 binding.recyclerView.adapter?.notifyDataSetChanged()
                 dialog.dismiss()
             }
@@ -116,7 +117,7 @@ class Challenge : Fragment() {
 
 
     // Función para mostrar el cuadro de diálogo de Eliminar
-    private fun showDeleteDialog(challenge: ChallengeItem) {
+    private fun showDeleteDialog(challenge: Challenge) {
         val dialog = DeleteChallengeDialog(challenge.description) {
             // Aquí se elimina el reto de la lista
             Toast.makeText(context, "Reto eliminado: ${challenge.description}", Toast.LENGTH_SHORT).show()
@@ -126,7 +127,7 @@ class Challenge : Fragment() {
         dialog.show(parentFragmentManager, "DeleteChallengeDialog")
     }
 
-    private fun showEditChallengeDialog(challengeItem: ChallengeItem) {
+    private fun showEditChallengeDialog(Challenge: Challenge) {
         // Usa DataBinding para inflar el layout del diálogo
         val bindingDialog = EditChallengeBinding.inflate(LayoutInflater.from(requireContext()))
 
@@ -137,7 +138,7 @@ class Challenge : Fragment() {
             .create()
 
         // Configurar el EditText con la descripción actual
-        bindingDialog.etChallenge.setText(challengeItem.description)
+        bindingDialog.etChallenge.setText(Challenge.description)
 
         // Configuración del botón Cancelar
         bindingDialog.btnEditCancel.setOnClickListener {
@@ -149,7 +150,10 @@ class Challenge : Fragment() {
             val updatedChallenge = bindingDialog.etChallenge.text.toString()
             if (updatedChallenge.isNotEmpty()) {
                 // Actualiza el elemento en la lista
-                challengeList[challengeList.indexOf(challengeItem)] = ChallengeItem(updatedChallenge) // Actualiza el desafío en la lista
+                challengeList[challengeList.indexOf(Challenge)] = Challenge(
+                    1,
+                    description = TODO()
+                ) // Actualiza el desafío en la lista
                 binding.recyclerView.adapter?.notifyDataSetChanged() // Actualiza el RecyclerView
                 dialog.dismiss() // Cerrar el diálogo después de guardar
             }
@@ -167,7 +171,7 @@ class Challenge : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Challenge().apply {
+            ChallengeFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

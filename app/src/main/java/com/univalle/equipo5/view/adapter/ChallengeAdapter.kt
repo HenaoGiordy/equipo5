@@ -1,62 +1,54 @@
 package com.univalle.equipo5.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.univalle.equipo5.R
-import com.univalle.equipo5.view.model.ChallengeItem
+import com.univalle.equipo5.databinding.ItemChallengeBinding
+import data.entities.Challenge
 
 // ChallengeAdapter.kt
-
 class ChallengeAdapter(
-    private val challengeList: List<ChallengeItem>,
-    private val onDeleteChallenge: (ChallengeItem) -> Unit, // Callback para manejar la eliminación
-    private val onEditChallenge: (ChallengeItem) -> Unit // Callback para manejar la edición
+    private val challengeList: List<Challenge>,
+    private val onDeleteChallenge: (Challenge) -> Unit,
+    private val onEditChallenge: (Challenge) -> Unit
 ) : RecyclerView.Adapter<ChallengeAdapter.ChallengeViewHolder>() {
 
-    // Vista del elemento del RecyclerView
-    class ChallengeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val descriptionChallenge: TextView = itemView.findViewById(R.id.descriptionChallenge)
-        val editChallenge: ImageView = itemView.findViewById(R.id.editChallenge)
-        val deleteChallenge: ImageView = itemView.findViewById(R.id.deleteChallenge)
-    }
+    // Usar DataBinding en el ViewHolder
+    class ChallengeViewHolder(val binding: ItemChallengeBinding) : RecyclerView.ViewHolder(binding.root)
 
-    // Crear nuevas vistas (invocadas por el layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_challenge, parent, false)
-        return ChallengeViewHolder(view)
+        // Inflar usando DataBinding
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: ItemChallengeBinding = DataBindingUtil.inflate(inflater, R.layout.item_challenge, parent, false)
+        return ChallengeViewHolder(binding)
     }
 
-    // Reemplazar el contenido de una vista (invocado por el layout manager)
     override fun onBindViewHolder(holder: ChallengeViewHolder, position: Int) {
         val challengeItem = challengeList[position]
-        holder.descriptionChallenge.text = challengeItem.description
 
+        // Vincular el objeto Challenge directamente con el layout usando DataBinding
+        holder.binding.challenge = challengeItem  // Establece el objeto en el layout (challenge)
 
-        // Animación para el botón de editar
-        holder.editChallenge.setOnClickListener {
+        // Animación y lógica para el botón de editar
+        holder.binding.editChallenge.setOnClickListener {
             val scaleAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.scale_animation)
             it.startAnimation(scaleAnimation)
-            onEditChallenge(challengeItem) // Llama al callback de edición
+            onEditChallenge(challengeItem)
         }
 
         // Animación y lógica para el botón de eliminar
-        holder.deleteChallenge.setOnClickListener {
+        holder.binding.deleteChallenge.setOnClickListener {
             val scaleAnimation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.scale_animation)
             it.startAnimation(scaleAnimation)
-
-            // Llama al callback de eliminación con el elemento ChallengeItem correspondiente
             onDeleteChallenge(challengeItem)
         }
     }
 
-    // Retornar el tamaño de la lista
     override fun getItemCount(): Int {
         return challengeList.size
     }
 }
+

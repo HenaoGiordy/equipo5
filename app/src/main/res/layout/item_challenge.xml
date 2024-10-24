@@ -1,66 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <data>
+        <!-- Variable que representará el objeto Challenge -->
+        <variable
+            name="challenge"
+            type="data.entities.Challenge" />
+    </data>
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-        <ImageView
-            android:id="@+id/iconChallenge"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/beer"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
-
-        <ImageView
-            android:id="@+id/editChallenge"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/edit"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="40dp"
-            android:layout_alignParentTop="true"
-            app:tint="@color/green" />
-
-        <ImageView
-            android:id="@+id/deleteChallenge"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/delete"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            app:tint="@color/red" />
-
-        <View
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/iconChallenge"
-            android:layout_marginTop="8dp"
-            android:background="@color/black" />
-
-        <TextView
-            android:id="@+id/descriptionChallenge"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iconChallenge"
-            android:layout_marginTop="16dp"
-            android:text="Descripción del reto"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:padding="16dp">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/iconChallenge"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/beer"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
 
-</androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/editChallenge"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/edit"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="40dp"
+                android:layout_alignParentTop="true"
+                app:tint="@color/green" />
+
+            <ImageView
+                android:id="@+id/deleteChallenge"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/delete"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                app:tint="@color/red" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/iconChallenge"
+                android:layout_marginTop="8dp"
+                android:background="@color/black" />
+
+            <TextView
+                android:id="@+id/descriptionChallenge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iconChallenge"
+                android:layout_marginTop="16dp"
+                android:text="Descripción del reto"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

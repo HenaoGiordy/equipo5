@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/challenge"
-        android:name="com.univalle.equipo5.view.Challenge"
+        android:name="com.univalle.equipo5.view.ChallengeFragment"
         android:label="Challenge" />
         <action
             android:id="@+id/action_challenge_to_homeMain"
