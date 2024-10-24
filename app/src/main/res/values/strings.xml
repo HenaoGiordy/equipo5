@@ -10,5 +10,5 @@
     <string name="escriba_el_reto">Escriba el reto</string>
     <string name="agregar_reto">Agregar reto</string>
     <string name="editar_reto">Editar reto</string>
-    <string name="editar_reto_descripcion">Editar reto descripcion</string>
+    <string name="editar_reto_descripcion">Editar reto descripción</string>
 </resources>

@@ -26,6 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/escriba_el_reto"
+            android:textColorHint="@color/ligthGray"
+            android:textColor="@color/black"
             android:backgroundTint="@color/orange"
             android:layout_marginBottom="16dp"
             android:autofillHints="freeform"
