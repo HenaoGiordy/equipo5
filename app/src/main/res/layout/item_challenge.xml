@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <!-- Variable que representará el objeto Challenge -->
         <variable
             name="challenge"
             type="data.entities.Challenge" />
@@ -64,10 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iconChallenge"
                 android:layout_marginTop="16dp"
-                android:text="Descripción del reto"
+                android:text="@{challenge.description}"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
-
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

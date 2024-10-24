@@ -28,6 +28,20 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun deleteChallenge(challenge: Challenge) {
+        viewModelScope.launch {
+            repository.deleteChallenge(challenge)
+            fetchChallenges() // Actualizar la lista después de eliminar
+        }
+    }
+
+    fun updateChallenge(challenge: Challenge) {
+        viewModelScope.launch {
+            repository.updateChallenge(challenge)
+            fetchChallenges() // Actualizar la lista después de editar
+        }
+    }
+
     private fun fetchChallenges() {
         viewModelScope.launch {
             val challengeList = repository.getAllChallenges()
