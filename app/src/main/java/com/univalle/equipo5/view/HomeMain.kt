@@ -25,6 +25,7 @@ class HomeMain : Fragment() {
     private var isSoundOn: Boolean = true
     private var _binding: FragmentHomeMainBinding? = null
     private val binding get() = _binding!!
+    private var countDownTimer: CountDownTimer? = null
 
     // Ángulo en el que se detuvo la botella anteriormente
     private var currentAngle = 0f
@@ -204,14 +205,14 @@ class HomeMain : Fragment() {
 
     // Función para iniciar el contador regresivo
     private fun startCountdownTimer(countdownText: TextView) {
-        object : CountDownTimer(3000, 1000) {
+        countDownTimer = object : CountDownTimer(3000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 countdownText.text = (millisUntilFinished / 1000).toString()
             }
 
             override fun onFinish() {
                 countdownText.text = "0"
-                binding.blinkingButton.visibility = View.VISIBLE
+                _binding?.blinkingButton?.visibility = View.VISIBLE
             }
         }.start()
     }
@@ -274,6 +275,8 @@ class HomeMain : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        countDownTimer?.cancel() // Cancela el temporizador
+        _binding = null // Limpia el binding
     }
 
     override fun onDestroy() {
