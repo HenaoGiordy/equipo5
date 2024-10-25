@@ -21,20 +21,33 @@ import android.widget.TextView
 import kotlin.random.Random
 
 class HomeMain : Fragment() {
-    private var mediaPlayer: MediaPlayer? = null
+    private var backgroundMusicPlayer: MediaPlayer? = null
+    private var bottleSpinPlayer: MediaPlayer? = null
     private var isSoundOn: Boolean = true
     private var _binding: FragmentHomeMainBinding? = null
     private val binding get() = _binding!!
     private var countDownTimer: CountDownTimer? = null
-
+    // Variable para recordar si la música estaba sonando antes del giro
+    private var wasPlayingBeforeSpin: Boolean = false
     // Ángulo en el que se detuvo la botella anteriormente
     private var currentAngle = 0f
 
+    // Array con los IDs de los sonidos de botella
+    private val bottleSpinSounds = arrayOf(
+        R.raw.bottle_spin_1,
+        R.raw.bottle_spin_2,
+        R.raw.bottle_spin_3,
+        R.raw.bottle_spin_4,
+        R.raw.bottle_spin_5,
+        R.raw.bottle_spin_6,
+        R.raw.bottle_spin_7
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.soundapp)
-        mediaPlayer?.isLooping = true
-        mediaPlayer?.start()
+        backgroundMusicPlayer = MediaPlayer.create(requireContext(), R.raw.soundapp)
+        backgroundMusicPlayer?.isLooping = true
+        backgroundMusicPlayer?.start()
     }
 
     override fun onCreateView(
@@ -71,14 +84,15 @@ class HomeMain : Fragment() {
 
         binding.sound.setOnClickListener {
             it.startAnimation(scaleAnimation)
-            if (isSoundOn) {
-                mediaPlayer?.pause()
+            updateSoundState()
+            /*if (isSoundOn) {
+                backgroundMusicPlayer?.pause()
                 binding.sound.setImageResource(R.drawable.nosound)
             } else {
-                mediaPlayer?.start()
+                backgroundMusicPlayer?.start()
                 binding.sound.setImageResource(R.drawable.sound)
             }
-            isSoundOn = !isSoundOn
+            isSoundOn = !isSoundOn*/
         }
 
         binding.instructions.setOnClickListener {
@@ -174,10 +188,44 @@ class HomeMain : Fragment() {
         binding.blinkingButton.startAnimation(blinkAnimation)
     }
 
-    // Función para hacer girar la botella
+    // Función para reproducir un sonido aleatorio de botella girando
+    private fun playRandomBottleSpinSound() {
+        try {
+            // Liberar el MediaPlayer anterior si existe
+            bottleSpinPlayer?.release()
+
+            // Seleccionar un sonido aleatorio del array
+            val randomSound = bottleSpinSounds[Random.nextInt(bottleSpinSounds.size)]
+
+            // Crear y configurar el nuevo MediaPlayer
+            bottleSpinPlayer = MediaPlayer.create(requireContext(), randomSound)
+            bottleSpinPlayer?.setOnCompletionListener { mp ->
+                mp.release()
+                bottleSpinPlayer = null
+            }
+
+            // Reproducir solo si el sonido está activado
+//            if (isSoundOn) {
+                bottleSpinPlayer?.start()
+//            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    // Función modificada para hacer girar la botella
     private fun startBottleSpin(bottleImage: ImageView) {
-        val randomAngle = Random.nextInt(360) + 720 // Rotación aleatoria
+        val randomAngle = Random.nextInt(360) + 720
         val newAngle = currentAngle + randomAngle
+
+        // Guardar el estado de la música y pausarla si está sonando
+        wasPlayingBeforeSpin = isSoundOn && backgroundMusicPlayer?.isPlaying == true
+        if (wasPlayingBeforeSpin) {
+            backgroundMusicPlayer?.pause()
+        }
+
+        // Reproducir el sonido de la botella
+        playRandomBottleSpinSound()
 
         val rotateAnimation = RotateAnimation(
             currentAngle, newAngle,
@@ -190,17 +238,38 @@ class HomeMain : Fragment() {
 
         currentAngle = newAngle % 360
 
-        // Iniciar el contador regresivo
         startCountdownTimer(binding.countdownText)
 
-        // Reaparecer el botón al finalizar la cuenta regresiva
         rotateAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
                 startBlinkingButton()
+                bottleSpinPlayer?.release()
+                bottleSpinPlayer = null
+
+                // Reanudar la música de fondo si estaba sonando antes
+                if (wasPlayingBeforeSpin && isSoundOn) {
+                    backgroundMusicPlayer?.start()
+                }
             }
             override fun onAnimationRepeat(animation: Animation) {}
         })
+    }
+
+    // Modificar el manejo del botón de sonido
+    private fun updateSoundState() {
+        if (isSoundOn) {
+            backgroundMusicPlayer?.pause()
+            bottleSpinPlayer?.pause()
+            binding.sound.setImageResource(R.drawable.nosound)
+        } else {
+            // Solo reanudar la música si no hay un giro en proceso
+            if (bottleSpinPlayer == null) {
+                backgroundMusicPlayer?.start()
+            }
+            binding.sound.setImageResource(R.drawable.sound)
+        }
+        isSoundOn = !isSoundOn
     }
 
     // Función para iniciar el contador regresivo
@@ -226,7 +295,7 @@ class HomeMain : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        mediaPlayer?.pause()
+        backgroundMusicPlayer?.pause()
     }
 
     override fun onStop() {
@@ -240,10 +309,10 @@ class HomeMain : Fragment() {
         isSoundOn = isAppRunning
 
         if (isSoundOn) {
-            mediaPlayer?.start()
+            backgroundMusicPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
         } else {
-            mediaPlayer?.pause()
+            backgroundMusicPlayer?.pause()
             binding.sound.setImageResource(R.drawable.nosound)
         }
     }
@@ -259,10 +328,10 @@ class HomeMain : Fragment() {
         super.onResume()
         isSoundOn = getSoundState()
         if (isSoundOn) {
-            mediaPlayer?.start()
+            backgroundMusicPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
         } else {
-            mediaPlayer?.pause()
+            backgroundMusicPlayer?.pause()
             binding.sound.setImageResource(R.drawable.nosound)
         }
     }
@@ -281,8 +350,8 @@ class HomeMain : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer?.release()
-        mediaPlayer = null
+        backgroundMusicPlayer?.release()
+        backgroundMusicPlayer = null
     }
 
     companion object {
