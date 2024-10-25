@@ -5,7 +5,7 @@ import data.entities.Challenge
 
 @Dao
 interface ChallengeDao {
-    @Query("SELECT * FROM challenges ORDER BY id ASC")
+    @Query("SELECT * FROM challenges ORDER BY id DESC")
     suspend fun getAll(): List<Challenge>
 
     @Query("SELECT * FROM challenges WHERE id = :challengeId")
