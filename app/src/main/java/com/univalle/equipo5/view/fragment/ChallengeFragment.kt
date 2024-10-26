@@ -1,4 +1,4 @@
-package com.univalle.equipo5.view
+package com.univalle.equipo5.view.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -16,6 +16,7 @@ import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.AddChallengeBinding
 import com.univalle.equipo5.databinding.EditChallengeBinding
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
+import com.univalle.equipo5.view.DeleteChallengeDialog
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import data.entities.Challenge
 import data.viewModel.ChallengeViewModel

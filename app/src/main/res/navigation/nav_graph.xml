@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeMain"
-        android:name="com.univalle.equipo5.view.HomeMain"
+        android:name="com.univalle.equipo5.view.fragment.HomeFragment"
         android:label="HomeMain">
         <action
             android:id="@+id/action_homeMain_to_instructions"
@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/instructions"
-        android:name="com.univalle.equipo5.view.Instructions"
+        android:name="com.univalle.equipo5.view.fragment.InstructionsFragment"
         android:label="Instructions" />
         <action
             android:id="@+id/action_instructions_to_homeMain"
@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/challenge"
-        android:name="com.univalle.equipo5.view.ChallengeFragment"
+        android:name="com.univalle.equipo5.view.fragment.ChallengeFragment"
         android:label="Challenge" />
         <action
             android:id="@+id/action_challenge_to_homeMain"

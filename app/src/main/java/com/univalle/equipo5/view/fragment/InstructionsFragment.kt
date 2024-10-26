@@ -1,4 +1,4 @@
-package com.univalle.equipo5.view
+package com.univalle.equipo5.view.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.FragmentInstructionsBinding
 
-class Instructions : Fragment() {
+class InstructionsFragment : Fragment() {
 
     private lateinit var binding: FragmentInstructionsBinding
 
@@ -34,6 +34,6 @@ class Instructions : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = Instructions()
+        fun newInstance() = InstructionsFragment()
     }
 }

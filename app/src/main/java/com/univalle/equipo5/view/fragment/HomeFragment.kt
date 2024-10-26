@@ -1,4 +1,4 @@
-package com.univalle.equipo5.view
+package com.univalle.equipo5.view.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -20,7 +20,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlin.random.Random
 
-class HomeMain : Fragment() {
+class HomeFragment : Fragment() {
     private var backgroundMusicPlayer: MediaPlayer? = null
     private var bottleSpinPlayer: MediaPlayer? = null
     private var isSoundOn: Boolean = true
@@ -356,7 +356,7 @@ class HomeMain : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = HomeMain().apply {}
+        fun newInstance() = HomeFragment().apply {}
     }
 }
 
