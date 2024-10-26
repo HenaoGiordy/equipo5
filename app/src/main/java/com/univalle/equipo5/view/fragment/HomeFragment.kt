@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -354,27 +353,6 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer?.pause()
     }
 
-    override fun onStop() {
-        super.onStop()
-        saveSoundState()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val isAppRunning = getSoundState()
-        isSoundOn = isAppRunning
-
-        if (isSoundOn) {
-            backgroundMusicPlayer?.start()
-            binding.sound.setImageResource(R.drawable.sound)
-        } else {
-            backgroundMusicPlayer?.pause()
-            binding.sound.setImageResource(R.drawable.nosound)
-        }
-    }
-
-
-
     private fun getSoundState(): Boolean {
         val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean("isSoundOn", true) // Valor por defecto es true (sonido encendido)
@@ -387,6 +365,7 @@ class HomeFragment : Fragment() {
             backgroundMusicPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
         } else {
+
             backgroundMusicPlayer?.pause()
             binding.sound.setImageResource(R.drawable.nosound)
         }
