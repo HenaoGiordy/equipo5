@@ -1,0 +1,35 @@
+<!-- res/layout/dialog_reto.xml -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hola"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/dialogMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Otro tex"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/dialogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cerrar"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</layout>

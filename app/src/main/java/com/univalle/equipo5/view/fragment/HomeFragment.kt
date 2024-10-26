@@ -16,8 +16,10 @@ import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 import android.os.CountDownTimer
 import android.view.animation.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import kotlin.random.Random
 
 class HomeFragment : Fragment() {
@@ -74,6 +76,7 @@ class HomeFragment : Fragment() {
             it.clearAnimation()
             it.visibility = View.INVISIBLE
             startBottleSpin(binding.bottleImage)
+
         }
 
         // Configuración del contador regresivo en el centro de la botella
@@ -251,9 +254,26 @@ class HomeFragment : Fragment() {
                 if (wasPlayingBeforeSpin && isSoundOn) {
                     backgroundMusicPlayer?.start()
                 }
+
+                showCustomDialog()
             }
             override fun onAnimationRepeat(animation: Animation) {}
         })
+    }
+
+    private fun showCustomDialog() {
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_reto, null)
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.dialogButton).setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
     // Modificar el manejo del botón de sonido
