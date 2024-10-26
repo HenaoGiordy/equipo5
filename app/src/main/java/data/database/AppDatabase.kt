@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import data.dao.ChallengeDao
-import data.entities.Challenge
+import model.Challenge
 
 @Database(
     entities = [Challenge::class],

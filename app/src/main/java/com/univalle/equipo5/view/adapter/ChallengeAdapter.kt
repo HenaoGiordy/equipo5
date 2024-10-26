@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.ItemChallengeBinding
-import data.entities.Challenge
+import model.Challenge
 
 // ChallengeAdapter.kt
 class ChallengeAdapter(

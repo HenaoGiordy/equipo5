@@ -1,7 +1,7 @@
 package data.dao
 
 import androidx.room.*
-import data.entities.Challenge
+import model.Challenge
 
 @Dao
 interface ChallengeDao {

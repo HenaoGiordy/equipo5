@@ -1,6 +1,6 @@
-package data.repository
+package repository
 
-import data.entities.Challenge
+import model.Challenge
 import data.dao.ChallengeDao
 
 

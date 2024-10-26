@@ -1,4 +1,4 @@
-package data.viewModel
+package viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import data.repository.ChallengeRepository
-import data.entities.Challenge
+import repository.ChallengeRepository
+import model.Challenge
 import data.database.AppDatabase
 
 class ChallengeViewModel(application: Application) : AndroidViewModel(application) {

@@ -18,8 +18,8 @@ import com.univalle.equipo5.databinding.EditChallengeBinding
 import com.univalle.equipo5.databinding.FragmentChallengeBinding
 import com.univalle.equipo5.view.DeleteChallengeDialog
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
-import data.entities.Challenge
-import data.viewModel.ChallengeViewModel
+import model.Challenge
+import viewModel.ChallengeViewModel
 
 class ChallengeFragment : Fragment() {
     private var _binding: FragmentChallengeBinding? = null
