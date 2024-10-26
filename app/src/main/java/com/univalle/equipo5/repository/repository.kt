@@ -1,7 +1,7 @@
-package repository
+package com.univalle.equipo5.repository
 
-import model.Challenge
-import data.dao.ChallengeDao
+import com.univalle.equipo5.model.Challenge
+import com.univalle.equipo5.data.dao.ChallengeDao
 
 
 class ChallengeRepository(private val challengeDao: ChallengeDao) {

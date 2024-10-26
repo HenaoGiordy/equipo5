@@ -1,4 +1,4 @@
-package viewModel
+package com.univalle.equipo5.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import repository.ChallengeRepository
-import model.Challenge
-import data.database.AppDatabase
+import com.univalle.equipo5.repository.ChallengeRepository
+import com.univalle.equipo5.model.Challenge
+import com.univalle.equipo5.data.database.AppDatabase
 
 class ChallengeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: ChallengeRepository

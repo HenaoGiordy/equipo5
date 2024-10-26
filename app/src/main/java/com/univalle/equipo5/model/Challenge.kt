@@ -1,4 +1,4 @@
-package model
+package com.univalle.equipo5.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,7 +1,7 @@
-package data.dao
+package com.univalle.equipo5.data.dao
 
 import androidx.room.*
-import model.Challenge
+import com.univalle.equipo5.model.Challenge
 
 @Dao
 interface ChallengeDao {

@@ -1,11 +1,11 @@
-package data.database
+package com.univalle.equipo5.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import data.dao.ChallengeDao
-import model.Challenge
+import com.univalle.equipo5.data.dao.ChallengeDao
+import com.univalle.equipo5.model.Challenge
 
 @Database(
     entities = [Challenge::class],

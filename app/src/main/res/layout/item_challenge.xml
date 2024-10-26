@@ -4,7 +4,7 @@
     <data>
         <variable
             name="challenge"
-            type="model.Challenge" />
+            type="com.univalle.equipo5.model.Challenge" />
     </data>
 
     <androidx.cardview.widget.CardView
