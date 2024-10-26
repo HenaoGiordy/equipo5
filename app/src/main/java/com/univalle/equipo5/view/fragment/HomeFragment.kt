@@ -20,6 +20,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.univalle.equipo5.databinding.DialogRetoBinding
+import com.univalle.equipo5.viewModel.ChallengeViewModel
 import kotlin.random.Random
 
 class HomeFragment : Fragment() {
@@ -33,6 +37,7 @@ class HomeFragment : Fragment() {
     private var wasPlayingBeforeSpin: Boolean = false
     // Ángulo en el que se detuvo la botella anteriormente
     private var currentAngle = 0f
+    private lateinit var challengeViewModel:ChallengeViewModel
 
     // Array con los IDs de los sonidos de botella
     private val bottleSpinSounds = arrayOf(
@@ -50,6 +55,7 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer = MediaPlayer.create(requireContext(), R.raw.soundapp)
         backgroundMusicPlayer?.isLooping = true
         backgroundMusicPlayer?.start()
+        challengeViewModel = ViewModelProvider(this)[ChallengeViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -244,6 +250,7 @@ class HomeFragment : Fragment() {
         startCountdownTimer(binding.countdownText)
 
         rotateAnimation.setAnimationListener(object : Animation.AnimationListener {
+
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
                 startBlinkingButton()
@@ -263,16 +270,31 @@ class HomeFragment : Fragment() {
 
     private fun showCustomDialog() {
 
-        val dialogView = layoutInflater.inflate(R.layout.dialog_reto, null)
+        val dialogBinding = DataBindingUtil.inflate<DialogRetoBinding>(
+            layoutInflater, R.layout.dialog_reto, null, false
+        )
 
+        // Crear y mostrar el diálogo
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
+            .setView(dialogBinding.root)
             .create()
 
-        dialogView.findViewById<Button>(R.id.dialogButton).setOnClickListener {
+        challengeViewModel.getRandomChallenge { challenge ->
+            if (challenge != null) {
+                // Muestra el desafío aleatorio en tu UI
+                dialogBinding.dialogMessage.text = challenge.description
+            } else {
+                // Manejar el caso en que no se encontró un desafío
+                dialogBinding.dialogMessage.text = "No hay desafíos disponibles."
+            }
+        }
+
+        // Configurar el botón "Aceptar" para cerrar el diálogo
+        dialogBinding.dialogButton.setOnClickListener {
             alertDialog.dismiss()
         }
 
+        // Mostrar el diálogo
         alertDialog.show()
     }
 

@@ -25,4 +25,8 @@ class ChallengeRepository(private val challengeDao: ChallengeDao) {
     suspend fun deleteChallenge(challenge: Challenge) {
         challengeDao.delete(challenge)
     }
+
+    suspend fun getRandomChallenge(): Challenge? {
+        return challengeDao.getRandomChallenge()
+    }
 }

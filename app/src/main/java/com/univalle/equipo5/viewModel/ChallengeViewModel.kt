@@ -48,4 +48,11 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
             _challenges.postValue(challengeList) // Actualiza los retos en LiveData
         }
     }
+
+    fun getRandomChallenge(callback: (Challenge?) -> Unit) {
+        viewModelScope.launch {
+            val randomChallenge = repository.getRandomChallenge()
+            callback(randomChallenge)
+        }
+    }
 }

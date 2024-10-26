@@ -19,4 +19,7 @@ interface ChallengeDao {
 
     @Delete
     suspend fun delete(challenge: Challenge)
+
+    @Query("SELECT * FROM challenges ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomChallenge(): Challenge?
 }
