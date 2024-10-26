@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -22,8 +23,7 @@ import com.univalle.equipo5.model.Challenge
 import com.univalle.equipo5.viewModel.ChallengeViewModel
 
 class ChallengeFragment : Fragment() {
-    private var _binding: FragmentChallengeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentChallengeBinding
     private val viewModel: ChallengeViewModel by activityViewModels()
 
     private lateinit var challengeAdapter: ChallengeAdapter
@@ -32,7 +32,7 @@ class ChallengeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentChallengeBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_challenge, container, false)
         return binding.root
     }
 
@@ -136,6 +136,5 @@ class ChallengeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
     }
 }

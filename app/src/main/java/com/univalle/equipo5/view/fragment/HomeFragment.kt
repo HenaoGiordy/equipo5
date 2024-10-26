@@ -34,8 +34,7 @@ class HomeFragment : Fragment() {
     private var backgroundMusicPlayer: MediaPlayer? = null
     private var bottleSpinPlayer: MediaPlayer? = null
     private var isSoundOn: Boolean = true
-    private var _binding: FragmentHomeMainBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeMainBinding
     private var countDownTimer: CountDownTimer? = null
     // Variable para recordar si la música estaba sonando antes del giro
     private var wasPlayingBeforeSpin: Boolean = false
@@ -69,7 +68,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflar el layout usando DataBinding
-        _binding = FragmentHomeMainBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_main, container, false)
         return binding.root
     }
 
@@ -338,7 +337,7 @@ class HomeFragment : Fragment() {
 
             override fun onFinish() {
                 countdownText.text = "0"
-                _binding?.blinkingButton?.visibility = View.VISIBLE
+                binding.blinkingButton.visibility = View.VISIBLE
             }
         }.start()
     }
@@ -400,20 +399,13 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         countDownTimer?.cancel() // Cancela el temporizador
-        _binding = null // Limpia el binding
     }
 
     override fun onDestroy() {
         super.onDestroy()
         backgroundMusicPlayer?.release()
         backgroundMusicPlayer = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = HomeFragment().apply {}
     }
 }
 
