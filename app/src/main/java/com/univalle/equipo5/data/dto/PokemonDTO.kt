@@ -1,3 +1,8 @@
 package com.univalle.equipo5.data.dto
 
-data class PokemonDTO(val imagenUrl: String )
+import com.google.gson.annotations.SerializedName
+
+data class PokemonDTO(
+    @SerializedName("img")
+    val imagenUrl: String
+)

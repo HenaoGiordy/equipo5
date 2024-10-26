@@ -15,15 +15,19 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.animation.*
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.squareup.picasso.Picasso
 import com.univalle.equipo5.databinding.DialogRetoBinding
 import com.univalle.equipo5.viewModel.ChallengeViewModel
+import com.univalle.equipo5.viewModel.PokemonViewModel
+import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class HomeFragment : Fragment() {
@@ -38,6 +42,7 @@ class HomeFragment : Fragment() {
     // Ángulo en el que se detuvo la botella anteriormente
     private var currentAngle = 0f
     private lateinit var challengeViewModel:ChallengeViewModel
+    private lateinit var pokemonViewModel: PokemonViewModel
 
     // Array con los IDs de los sonidos de botella
     private val bottleSpinSounds = arrayOf(
@@ -56,6 +61,7 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer?.isLooping = true
         backgroundMusicPlayer?.start()
         challengeViewModel = ViewModelProvider(this)[ChallengeViewModel::class.java]
+        pokemonViewModel = ViewModelProvider(this)[PokemonViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -251,7 +257,9 @@ class HomeFragment : Fragment() {
 
         rotateAnimation.setAnimationListener(object : Animation.AnimationListener {
 
-            override fun onAnimationStart(animation: Animation) {}
+            override fun onAnimationStart(animation: Animation) {
+
+            }
             override fun onAnimationEnd(animation: Animation) {
                 startBlinkingButton()
                 bottleSpinPlayer?.release()
@@ -269,7 +277,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun showCustomDialog() {
-
         val dialogBinding = DataBindingUtil.inflate<DialogRetoBinding>(
             layoutInflater, R.layout.dialog_reto, null, false
         )
@@ -280,14 +287,20 @@ class HomeFragment : Fragment() {
             .create()
 
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            val imagenUrl:String = pokemonViewModel.fetchPokemons()
+            val imagenUrlHttps = imagenUrl.replaceFirst("http", "https")
 
-        challengeViewModel.getRandomChallenge { challenge ->
-            if (challenge != null) {
-                // Muestra el desafío aleatorio en tu UI
-                dialogBinding.dialogMessage.text = challenge.description
-            } else {
-                // Manejar el caso en que no se encontró un desafío
-                dialogBinding.dialogMessage.text = "No hay desafíos disponibles."
+            Picasso.get()
+                .load(imagenUrlHttps) // Imagen en caso de error opcional
+                .into(dialogBinding.pokemonImageView)
+
+            challengeViewModel.getRandomChallenge { challenge ->
+                if (challenge != null) {
+                    dialogBinding.dialogMessage.text = challenge.description
+                } else {
+                    dialogBinding.dialogMessage.text = "No hay desafíos disponibles."
+                }
             }
         }
 

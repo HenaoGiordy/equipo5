@@ -14,6 +14,7 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 fragment = "1.6.1"
 navigation = "2.5.3"
+picasso = "2.71828"
 retrofit = "2.9.0"
 roomCommon = "2.6.1"
 
@@ -34,6 +35,7 @@ androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 androidx-room-common = { group = "androidx.room", name = "room-common", version.ref = "roomCommon" }
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 

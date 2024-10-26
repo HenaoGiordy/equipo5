@@ -82,6 +82,6 @@ dependencies {
     implementation (libs.converter.gson)
 
     //Glide
-    implementation (libs.glide)
+    implementation (libs.picasso)
 
 }

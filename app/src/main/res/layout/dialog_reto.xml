@@ -28,9 +28,7 @@
                 android:id="@+id/pokemonImageView"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:contentDescription="IMAGEN"
                 android:layout_gravity="center" />
-
         </FrameLayout>
 
         <!-- Título del diálogo -->
