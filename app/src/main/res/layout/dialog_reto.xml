@@ -1,35 +1,65 @@
-<!-- res/layout/dialog_reto.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/dialog_background"
+        android:gravity="center">
 
+        <!-- Contenedor para la imagen de Pokémon y el círculo -->
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <!-- Círculo en la parte superior -->
+            <ImageView
+                android:id="@+id/circleImageView"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/circle_background"
+                android:layout_gravity="center"/>
+
+            <!-- Imagen de Pokémon dentro del círculo -->
+            <ImageView
+                android:id="@+id/pokemonImageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="IMAGEN"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+        <!-- Título del diálogo -->
         <TextView
             android:id="@+id/dialogTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hola"
             android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="16dp"/>
 
+        <!-- Mensaje del diálogo -->
         <TextView
             android:id="@+id/dialogMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Otro tex"
             android:textSize="16sp"
-            android:layout_marginTop="8dp"/>
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp" />
 
+        <!-- Botón de cerrar -->
         <Button
             android:id="@+id/dialogButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cerrar"
-            android:layout_gravity="end"
-            android:layout_marginTop="16dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/orange" />
     </LinearLayout>
 </layout>

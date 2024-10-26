@@ -279,6 +279,8 @@ class HomeFragment : Fragment() {
             .setView(dialogBinding.root)
             .create()
 
+
+
         challengeViewModel.getRandomChallenge { challenge ->
             if (challenge != null) {
                 // Muestra el desafío aleatorio en tu UI
