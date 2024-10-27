@@ -284,6 +284,7 @@ class HomeFragment : Fragment() {
         // Crear y mostrar el diálogo
         val alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
+            .setCancelable(false)
             .create()
 
 
