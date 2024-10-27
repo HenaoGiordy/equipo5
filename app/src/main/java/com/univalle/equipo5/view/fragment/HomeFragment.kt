@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.univalle.equipo5.databinding.FragmentHomeMainBinding
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.animation.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,8 +33,7 @@ class HomeFragment : Fragment() {
     private var backgroundMusicPlayer: MediaPlayer? = null
     private var bottleSpinPlayer: MediaPlayer? = null
     private var isSoundOn: Boolean = true
-    private var _binding: FragmentHomeMainBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentHomeMainBinding
     private var countDownTimer: CountDownTimer? = null
     // Variable para recordar si la música estaba sonando antes del giro
     private var wasPlayingBeforeSpin: Boolean = false
@@ -69,7 +67,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflar el layout usando DataBinding
-        _binding = FragmentHomeMainBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_main, container, false)
         return binding.root
     }
 
@@ -339,7 +337,7 @@ class HomeFragment : Fragment() {
 
             override fun onFinish() {
                 countdownText.text = "0"
-                _binding?.blinkingButton?.visibility = View.VISIBLE
+                binding.blinkingButton.visibility = View.VISIBLE
             }
         }.start()
     }
@@ -356,27 +354,6 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer?.pause()
     }
 
-    override fun onStop() {
-        super.onStop()
-        saveSoundState()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val isAppRunning = getSoundState()
-        isSoundOn = isAppRunning
-
-        if (isSoundOn) {
-            backgroundMusicPlayer?.start()
-            binding.sound.setImageResource(R.drawable.sound)
-        } else {
-            backgroundMusicPlayer?.pause()
-            binding.sound.setImageResource(R.drawable.nosound)
-        }
-    }
-
-
-
     private fun getSoundState(): Boolean {
         val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean("isSoundOn", true) // Valor por defecto es true (sonido encendido)
@@ -389,6 +366,7 @@ class HomeFragment : Fragment() {
             backgroundMusicPlayer?.start()
             binding.sound.setImageResource(R.drawable.sound)
         } else {
+
             backgroundMusicPlayer?.pause()
             binding.sound.setImageResource(R.drawable.nosound)
         }
@@ -401,20 +379,13 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         countDownTimer?.cancel() // Cancela el temporizador
-        _binding = null // Limpia el binding
     }
 
     override fun onDestroy() {
         super.onDestroy()
         backgroundMusicPlayer?.release()
         backgroundMusicPlayer = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = HomeFragment().apply {}
     }
 }
 
