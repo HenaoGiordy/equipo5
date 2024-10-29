@@ -360,7 +360,7 @@ class HomeFragment : Fragment() {
         saveSoundState()
     }
 
-    override fun onStart() {so
+    override fun onStart() {
         super.onStart()
         val isAppRunning = getSoundState()
         isSoundOn = isAppRunning
