@@ -354,6 +354,27 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer?.pause()
     }
 
+
+    override fun onStop() {
+        super.onStop()
+        saveSoundState()
+    }
+
+    override fun onStart() {so
+        super.onStart()
+        val isAppRunning = getSoundState()
+        isSoundOn = isAppRunning
+
+        if (isSoundOn) {
+            backgroundMusicPlayer?.start()
+            binding.sound.setImageResource(R.drawable.sound)
+        } else {
+            backgroundMusicPlayer?.pause()
+            binding.sound.setImageResource(R.drawable.nosound)
+        }
+    }
+
+
     private fun getSoundState(): Boolean {
         val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean("isSoundOn", true) // Valor por defecto es true (sonido encendido)
