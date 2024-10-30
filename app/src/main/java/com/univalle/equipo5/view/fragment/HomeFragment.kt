@@ -342,28 +342,15 @@ class HomeFragment : Fragment() {
         }.start()
     }
 
-    private fun saveSoundState() {
-        val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("isSoundOn", isSoundOn)
-        editor.apply()
-    }
-
     override fun onPause() {
         super.onPause()
         backgroundMusicPlayer?.pause()
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        saveSoundState()
-    }
-
     override fun onStart() {
         super.onStart()
-        val isAppRunning = getSoundState()
-        isSoundOn = isAppRunning
+        isSoundOn = getSoundState()
 
         if (isSoundOn) {
             backgroundMusicPlayer?.start()
@@ -374,10 +361,23 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        saveSoundState() // Guardamos el estado en caso de salir a segundo plano
+    }
+
+    // Función para guardar el estado del sonido
+    private fun saveSoundState() {
+        val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("isSoundOn", isSoundOn)
+        editor.apply()
+    }
+
 
     private fun getSoundState(): Boolean {
         val sharedPreferences = requireActivity().getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
-        return sharedPreferences.getBoolean("isSoundOn", true) // Valor por defecto es true (sonido encendido)
+        return sharedPreferences.getBoolean("isSoundOn", true) // Sonido activado por defecto
     }
 
     override fun onResume() {
