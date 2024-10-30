@@ -286,6 +286,8 @@ class HomeFragment : Fragment() {
             .setCancelable(false)
             .create()
 
+        // Hacer el fondo transparente
+        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         viewLifecycleOwner.lifecycleScope.launch {
             val imagenUrl:String = pokemonViewModel.fetchPokemons()
