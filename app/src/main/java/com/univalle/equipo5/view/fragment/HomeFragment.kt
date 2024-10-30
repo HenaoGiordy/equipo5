@@ -80,18 +80,19 @@ class HomeFragment : Fragment() {
         // Configurar el botón parpadeante
         startBlinkingButton()
 
+        // Configuración del contador regresivo en el centro de la botella
+        val countdownText = binding.countdownText
+        // startCountdownTimer(countdownText)
+
         // Configurar el evento del botón para girar la botella
         binding.blinkingButton.setOnClickListener {
             // Ocultar el botón y detener el parpadeo
             it.clearAnimation()
             it.visibility = View.INVISIBLE
             startBottleSpin(binding.bottleImage)
+            startCountdownTimer(countdownText)
 
         }
-
-        // Configuración del contador regresivo en el centro de la botella
-        val countdownText = binding.countdownText
-        startCountdownTimer(countdownText)
 
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
 
@@ -330,7 +331,7 @@ class HomeFragment : Fragment() {
 
     // Función para iniciar el contador regresivo
     private fun startCountdownTimer(countdownText: TextView) {
-        countDownTimer = object : CountDownTimer(3000, 1000) {
+        countDownTimer = object : CountDownTimer(4000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 countdownText.text = (millisUntilFinished / 1000).toString()
             }
