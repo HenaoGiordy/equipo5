@@ -1,5 +1,6 @@
 package com.univalle.equipo5.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -23,4 +24,12 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Limpiar SharedPreferences al cerrar la app completamente
+        val sharedPreferences = getSharedPreferences("sound_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+    }
+
 }
