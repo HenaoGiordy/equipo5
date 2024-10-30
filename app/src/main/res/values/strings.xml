@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">equipo5</string>
+    <string name="background_image_desc">Fondo de madera</string>
+    <string name="bottle_desc">Botella del juego</string>
+    <string name="press_me">Presióname</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="guardar">Guardar</string>
+    <string name="escriba_el_reto">Escriba el reto</string>
+    <string name="agregar_reto">Agregar reto</string>
+    <string name="editar_reto">Editar reto</string>
+    <string name="editar_reto_descripcion">Editar reto descripción</string>
+    <string name="rate">Calificar app</string>
+    <string name="sound">Sonido</string>
+    <string name="instructions">Instrucciones</string>
+    <string name="add">Agregar reto</string>
+    <string name="share">Compartir app</string>
+    <string name="three">3</string>
+    <string name="beer">Cerveza</string>
+    <string name="delete">Eliminar reto</string>
+    <string name="backButton">Volver</string>
+    <string name="challenge">Retos</string>
+
 </resources>
