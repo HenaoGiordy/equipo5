@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -78,10 +80,17 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     //Retrofit
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     //Glide
-    implementation (libs.picasso)
+    implementation(libs.picasso)
 
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
+}
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

@@ -7,11 +7,7 @@ import androidx.room.RoomDatabase
 import com.univalle.equipo5.data.dao.ChallengeDao
 import com.univalle.equipo5.model.Challenge
 
-@Database(
-    entities = [Challenge::class],
-    version = 1
-)
-
+@Database(entities = [Challenge::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun ChallengeDao(): ChallengeDao
 
@@ -31,5 +27,4 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
     }
-
 }

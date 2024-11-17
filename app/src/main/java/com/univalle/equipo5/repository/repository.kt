@@ -1,10 +1,12 @@
 package com.univalle.equipo5.repository
 
-import com.univalle.equipo5.model.Challenge
 import com.univalle.equipo5.data.dao.ChallengeDao
+import com.univalle.equipo5.model.Challenge
+import javax.inject.Inject
 
-
-class ChallengeRepository(private val challengeDao: ChallengeDao) {
+class ChallengeRepository @Inject constructor(
+    private val challengeDao: ChallengeDao
+) {
 
     suspend fun getAllChallenges(): List<Challenge> {
         return challengeDao.getAll()

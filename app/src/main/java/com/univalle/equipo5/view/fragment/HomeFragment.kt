@@ -26,9 +26,11 @@ import com.squareup.picasso.Picasso
 import com.univalle.equipo5.databinding.DialogRetoBinding
 import com.univalle.equipo5.viewModel.ChallengeViewModel
 import com.univalle.equipo5.viewModel.PokemonViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var backgroundMusicPlayer: MediaPlayer? = null
     private var bottleSpinPlayer: MediaPlayer? = null
