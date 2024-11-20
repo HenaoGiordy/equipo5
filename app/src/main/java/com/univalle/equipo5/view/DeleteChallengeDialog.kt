@@ -8,7 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.DialogDeleteChallengeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DeleteChallengeDialog(
     private val challengeDescription: String,
     private val onConfirm: () -> Unit // Función lambda que se ejecuta al presionar "SI"
