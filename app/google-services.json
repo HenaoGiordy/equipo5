@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "226144034063",
+    "project_id": "equipo5-1ab66",
+    "storage_bucket": "equipo5-1ab66.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226144034063:android:11e0361ee1e0d38e53327a",
+        "android_client_info": {
+          "package_name": "com.univalle.equipo5"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBcGPBXK_y1CaytsMJf0zI3lLXKOaKXcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
