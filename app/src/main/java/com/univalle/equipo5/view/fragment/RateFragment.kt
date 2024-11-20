@@ -8,7 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.FragmentRateBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RateFragment : Fragment() {
 
     private lateinit var binding: FragmentRateBinding

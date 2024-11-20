@@ -1,51 +1,52 @@
 package com.univalle.equipo5.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import com.univalle.equipo5.repository.ChallengeRepository
 import com.univalle.equipo5.model.Challenge
-import com.univalle.equipo5.data.database.AppDatabase
+import com.univalle.equipo5.repository.ChallengeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChallengeViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class ChallengeViewModel @Inject constructor(
     private val repository: ChallengeRepository
+) : ViewModel() {
+
     private val _challenges = MutableLiveData<List<Challenge>>()
     val challenges: LiveData<List<Challenge>> get() = _challenges
 
     init {
-        val challengeDao = AppDatabase.getDatabase(application).ChallengeDao()
-        repository = ChallengeRepository(challengeDao)
-        fetchChallenges() // Llamar la función para obtener los retos al iniciar
+        fetchChallenges()
     }
 
     fun insertChallenge(challenge: Challenge) {
         viewModelScope.launch {
             repository.insertChallenge(challenge)
-            fetchChallenges() // Actualizar la lista después de insertar
+            fetchChallenges()
         }
     }
 
     fun deleteChallenge(challenge: Challenge) {
         viewModelScope.launch {
             repository.deleteChallenge(challenge)
-            fetchChallenges() // Actualizar la lista después de eliminar
+            fetchChallenges()
         }
     }
 
     fun updateChallenge(challenge: Challenge) {
         viewModelScope.launch {
             repository.updateChallenge(challenge)
-            fetchChallenges() // Actualizar la lista después de editar
+            fetchChallenges()
         }
     }
 
     private fun fetchChallenges() {
         viewModelScope.launch {
             val challengeList = repository.getAllChallenges()
-            _challenges.postValue(challengeList) // Actualiza los retos en LiveData
+            _challenges.postValue(challengeList)
         }
     }
 

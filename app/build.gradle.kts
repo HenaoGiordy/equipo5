@@ -4,6 +4,9 @@ plugins {
     id("com.google.devtools.ksp")
     // Add the Google services Gradle plugin
     id("com.google.gms.google-services")
+    // Dagger Hilt
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -80,14 +83,21 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     //Retrofit
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     //Glide
-    implementation (libs.picasso)
+    implementation(libs.picasso)
 
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-auth")
 
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
+}
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
