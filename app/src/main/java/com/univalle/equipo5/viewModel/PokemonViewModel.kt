@@ -4,15 +4,18 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.univalle.equipo5.data.dto.PokemonDTO
 import com.univalle.equipo5.data.dto.PokemonResponse
-import com.univalle.equipo5.webservice.ApiUtils
+import com.univalle.equipo5.webservice.ApiService
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class PokemonViewModel:ViewModel() {
-    private val apiService = ApiUtils.getApiService()
+@HiltViewModel
+class PokemonViewModel @Inject constructor( private val apiService:ApiService) :ViewModel() {
+
 
     suspend fun fetchPokemons(): String {
         return withContext(Dispatchers.IO) {
