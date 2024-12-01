@@ -20,15 +20,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import com.univalle.equipo5.databinding.DialogRetoBinding
 import com.univalle.equipo5.viewModel.ChallengeViewModel
 import com.univalle.equipo5.viewModel.PokemonViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var backgroundMusicPlayer: MediaPlayer? = null
     private var bottleSpinPlayer: MediaPlayer? = null
@@ -40,7 +43,7 @@ class HomeFragment : Fragment() {
     // Ángulo en el que se detuvo la botella anteriormente
     private var currentAngle = 0f
     private lateinit var challengeViewModel:ChallengeViewModel
-    private lateinit var pokemonViewModel: PokemonViewModel
+    private val pokemonViewModel: PokemonViewModel by viewModels()
 
     // Array con los IDs de los sonidos de botella
     private val bottleSpinSounds = arrayOf(
@@ -59,7 +62,7 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer?.isLooping = true
         backgroundMusicPlayer?.start()
         challengeViewModel = ViewModelProvider(this)[ChallengeViewModel::class.java]
-        pokemonViewModel = ViewModelProvider(this)[PokemonViewModel::class.java]
+
     }
 
     override fun onCreateView(
@@ -412,5 +415,3 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer = null
     }
 }
-
-
