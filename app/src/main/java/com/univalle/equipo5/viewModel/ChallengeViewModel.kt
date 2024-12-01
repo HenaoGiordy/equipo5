@@ -9,10 +9,16 @@ import kotlinx.coroutines.launch
 import com.univalle.equipo5.repository.ChallengeRepository
 import com.univalle.equipo5.model.Challenge
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class ChallengeViewModel(application: Application) : AndroidViewModel(application) {
-    private val firestore = FirebaseFirestore.getInstance()
+@HiltViewModel
+class ChallengeViewModel @Inject constructor(
+    application: Application,
+    private val challengeRepository: ChallengeRepository // Inyectamos el repositorio
+) : AndroidViewModel(application) {
+
     private val _challenges = MutableLiveData<List<Challenge>>()
     val challenges: LiveData<List<Challenge>> get() = _challenges
 
@@ -20,94 +26,57 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
         fetchChallenges() // Configura el listener en tiempo real al inicializar el ViewModel
     }
 
+    // Insertar un desafío
     fun insertChallenge(challenge: Challenge) {
         viewModelScope.launch {
             try {
-                val docRef = firestore.collection("challenges").add(challenge).await()
-                challenge.id = docRef.id
+                val docId = challengeRepository.insertChallenge(challenge)  // Usamos el repositorio para insertar
+                challenge.id = docId
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    // Actualizar un desafío en Room y Firestore
+    // Actualizar un desafío
     fun updateChallenge(challenge: Challenge) {
         viewModelScope.launch {
             try {
-                if (challenge.id != null) {
-                    firestore.collection("challenges").document(challenge.id!!).set(challenge).await()
-                }
+                challengeRepository.updateChallenge(challenge)  // Usamos el repositorio para actualizar
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    // Eliminar un desafío en Room y Firestore
+    // Eliminar un desafío
     fun deleteChallenge(challenge: Challenge) {
         viewModelScope.launch {
             try {
-                if (challenge.id != null) {
-                    firestore.collection("challenges").document(challenge.id!!).delete().await()
-                }
+                challengeRepository.deleteChallenge(challenge)  // Usamos el repositorio para eliminar
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    // Obtener un desafío aleatorio desde Room
+    // Obtener un desafío aleatorio
     fun getRandomChallenge(callback: (Challenge?) -> Unit) {
         viewModelScope.launch {
             try {
-                val challengesSnapshot = firestore.collection("challenges").get().await()
-                val challenges = challengesSnapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Challenge::class.java)?.apply { id = doc.id }
-                }
-
-                // Selecciona un desafío aleatorio de la lista
-                val randomChallenge = if (challenges.isNotEmpty()) {
-                    challenges.random()
-                } else {
-                    null // Si no hay desafíos disponibles
-                }
-
+                val randomChallenge = challengeRepository.getRandomChallenge()  // Usamos el repositorio para obtener el desafío
                 callback(randomChallenge)
             } catch (e: Exception) {
                 e.printStackTrace()
-                callback(null) // En caso de error, devuelve null
+                callback(null)  // En caso de error, devolvemos null
             }
         }
     }
 
-    // Obtener todos los desafíos desde Room y Firestore
+    // Obtener todos los desafíos en tiempo real
     private fun fetchChallenges() {
-        firestore.collection("challenges").addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                error.printStackTrace()
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                val challengesList = snapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Challenge::class.java)?.apply { id = doc.id }
-                }
-                _challenges.postValue(challengesList)
-            }
+        challengeRepository.getAllChallengesRealTime { challengesList ->
+            _challenges.postValue(challengesList)  // Actualiza la lista de desafíos
         }
     }
-
-
-    // Guardar un desafío en Firestore
-    private suspend fun saveChallengeToFirestore(challenge: Challenge): String? {
-        return try {
-            val challengeRef = firestore.collection("challenges").add(challenge).await()
-            challengeRef.id  // Devuelve el ID generado por Firestore
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null  // En caso de error, devuelve null
-        }
-    }
-
 }
