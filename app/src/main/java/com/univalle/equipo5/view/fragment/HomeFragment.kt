@@ -415,5 +415,3 @@ class HomeFragment : Fragment() {
         backgroundMusicPlayer = null
     }
 }
-
-
