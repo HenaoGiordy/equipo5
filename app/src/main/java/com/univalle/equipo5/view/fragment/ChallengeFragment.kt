@@ -22,8 +22,10 @@ import com.univalle.equipo5.view.DeleteChallengeDialog
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import com.univalle.equipo5.model.Challenge
 import com.univalle.equipo5.viewModel.ChallengeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ChallengeFragment : Fragment() {
     private lateinit var binding: FragmentChallengeBinding
     private val viewModel: ChallengeViewModel by activityViewModels()
