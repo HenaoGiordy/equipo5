@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -60,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setup() {
+        setupTextWatchers()
         binding.tvRegister.setOnClickListener {
             registerUser()
         }
@@ -67,6 +70,48 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             loginUser()
         }
+    }
+
+    private fun setupTextWatchers() {
+        val emailWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val email = binding.etEmail.text.toString()
+                val password = binding.etPassword.text.toString()
+                val areFieldsFilled = email.isNotBlank() && password.isNotBlank() && password.length >= 6
+
+                // Habilitar o deshabilitar los botones
+                binding.btnLogin.isEnabled = areFieldsFilled
+                binding.tvRegister.isEnabled = areFieldsFilled
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        val passwordWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val password = s.toString()
+
+                if (password.length < 6) {
+                    // Mostrar error y cambiar borde a rojo
+                    binding.tilPassword.error = "Mínimo 6 dígitos"
+                    binding.tilPassword.boxStrokeColor = getColor(R.color.red)
+                } else {
+                    // Eliminar el error y cambiar borde a blanco
+                    binding.tilPassword.error = null
+                    binding.tilPassword.boxStrokeColor = getColor(android.R.color.white)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        // Agregar los TextWatchers
+        binding.etEmail.addTextChangedListener(emailWatcher)
+        binding.etPassword.addTextChangedListener(passwordWatcher)
     }
 
     private fun loginUser() {

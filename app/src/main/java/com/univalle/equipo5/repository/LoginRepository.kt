@@ -28,7 +28,7 @@ class LoginRepository {
                             userResponse(
                                 UserResponse(
                                     isRegister = false,
-                                    message = "El usuario ya existe"
+                                    message = "Error en el registro"
                                 )
                             )
                         } else {

@@ -31,7 +31,7 @@ class LoginViewModel : ViewModel(){
             } else {
                 UserResponse(
                     isRegister = false, // No es registro
-                    message = "Error en el inicio de sesión"
+                    message = "Login incorrecto"
                 )
             }
             _isLogin.value = response
