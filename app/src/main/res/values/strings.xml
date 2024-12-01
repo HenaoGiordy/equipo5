@@ -24,5 +24,6 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="pico_botella">Pico Botella</string>
+    <string name="logout">Cerrar sesión</string>
 
 </resources>
