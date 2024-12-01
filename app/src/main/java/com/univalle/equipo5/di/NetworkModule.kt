@@ -1,4 +1,4 @@
-package com.univalle.equipo5.webservice
+package com.univalle.equipo5.di
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.univalle.equipo5.utils.Constants.BASE_URL
@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import com.univalle.equipo5.repository.ChallengeRepository
+import com.univalle.equipo5.webservice.ApiService
 import javax.inject.Singleton
 
 @Module
