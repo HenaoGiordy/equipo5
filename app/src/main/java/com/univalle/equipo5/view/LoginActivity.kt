@@ -77,13 +77,7 @@ class LoginActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val email = binding.etEmail.text.toString()
-                val password = binding.etPassword.text.toString()
-                val areFieldsFilled = email.isNotBlank() && password.isNotBlank() && password.length >= 6
-
-                // Habilitar o deshabilitar los botones
-                binding.btnLogin.isEnabled = areFieldsFilled
-                binding.tvRegister.isEnabled = areFieldsFilled
+                checkFieldsForEmptyValues()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -104,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
                     binding.tilPassword.error = null
                     binding.tilPassword.boxStrokeColor = getColor(android.R.color.white)
                 }
+                checkFieldsForEmptyValues()
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -112,6 +107,14 @@ class LoginActivity : AppCompatActivity() {
         // Agregar los TextWatchers
         binding.etEmail.addTextChangedListener(emailWatcher)
         binding.etPassword.addTextChangedListener(passwordWatcher)
+    }
+
+    private fun checkFieldsForEmptyValues() {
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
+
+        binding.btnLogin.isEnabled = email.isNotEmpty() && password.isNotEmpty()
+        binding.tvRegister.isEnabled = email.isNotEmpty() && password.isNotEmpty()
     }
 
     private fun loginUser() {
