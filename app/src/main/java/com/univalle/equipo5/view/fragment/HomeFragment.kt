@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import com.univalle.equipo5.databinding.DialogRetoBinding
+import com.univalle.equipo5.view.LoginActivity
 import com.univalle.equipo5.viewModel.ChallengeViewModel
 import com.univalle.equipo5.viewModel.PokemonViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -95,6 +96,11 @@ class HomeFragment : Fragment() {
             startBottleSpin(binding.bottleImage)
             startCountdownTimer(countdownText)
 
+        }
+
+        binding.logout.setOnClickListener {
+
+            logoutUser() // Llama directamente a la función para cerrar sesión
         }
 
         val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
@@ -228,6 +234,19 @@ class HomeFragment : Fragment() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun logoutUser() {
+        val sharedPreferences = requireActivity().getSharedPreferences("shared", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear() // Borra todos los datos de sesión
+        editor.apply()
+
+        // Redirigir al LoginActivity
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Limpia el back stack
+        startActivity(intent)
+        requireActivity().finish() // Finaliza la actividad actual
     }
 
     // Función modificada para hacer girar la botella
@@ -364,6 +383,16 @@ class HomeFragment : Fragment() {
         } else {
             backgroundMusicPlayer?.pause()
             binding.sound.setImageResource(R.drawable.nosound)
+        }
+        val sharedPreferences = requireActivity().getSharedPreferences("shared", Context.MODE_PRIVATE)
+        val email = sharedPreferences.getString("email", null)
+
+        if (email == null) {
+            // Redirigir al LoginActivity si no hay sesión
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            requireActivity().finish()
         }
     }
 
