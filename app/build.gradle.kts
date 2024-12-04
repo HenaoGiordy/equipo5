@@ -92,6 +92,19 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.47")
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    // JUnit
+    testImplementation("junit:junit:4.13.2")
+
+    // Coroutines Test
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+
+    // MockK para mocking
+    testImplementation("io.mockk:mockk:1.13.5")
+
+    // Core Testing
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+
 }
 // Allow references to generated code
 kapt {
