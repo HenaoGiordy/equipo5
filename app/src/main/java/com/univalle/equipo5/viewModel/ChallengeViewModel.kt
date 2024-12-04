@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.univalle.equipo5.repository.ChallengeRepository
@@ -15,9 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChallengeViewModel @Inject constructor(
-    application: Application,
     private val challengeRepository: ChallengeRepository // Inyectamos el repositorio
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _challenges = MutableLiveData<List<Challenge>>()
     val challenges: LiveData<List<Challenge>> get() = _challenges
