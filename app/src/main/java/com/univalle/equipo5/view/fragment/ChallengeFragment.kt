@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.univalle.equipo5.R
@@ -21,7 +22,10 @@ import com.univalle.equipo5.view.DeleteChallengeDialog
 import com.univalle.equipo5.view.adapter.ChallengeAdapter
 import com.univalle.equipo5.model.Challenge
 import com.univalle.equipo5.viewModel.ChallengeViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ChallengeFragment : Fragment() {
     private lateinit var binding: FragmentChallengeBinding
     private val viewModel: ChallengeViewModel by activityViewModels()
@@ -126,13 +130,20 @@ class ChallengeFragment : Fragment() {
             val updatedDescription = bindingDialog.etChallenge.text.toString()
             if (updatedDescription.isNotEmpty()) {
                 val updatedChallenge = challenge.copy(description = updatedDescription)
-                viewModel.updateChallenge(updatedChallenge)
-                dialog.dismiss()
+
+                // Llamar a la función suspend desde una corutina
+                viewLifecycleOwner.lifecycleScope.launch {
+                    viewModel.updateChallenge(updatedChallenge)
+                    dialog.dismiss()
+                }
+            } else {
+                Toast.makeText(requireContext(), "La descripción no puede estar vacía", Toast.LENGTH_SHORT).show()
             }
         }
 
         dialog.show()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

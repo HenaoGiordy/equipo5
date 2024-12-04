@@ -1,14 +1,10 @@
 package com.univalle.equipo5.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.ColumnInfo
+import com.google.firebase.firestore.DocumentId
 
-@Entity(tableName = "challenges")
-data class Challenge (
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-
-    @ColumnInfo(name = "description")
-    val description: String,
+data class Challenge(
+    @DocumentId
+    var id: String? = null,
+    val description: String = "",
+    var createdAt: Long = System.currentTimeMillis(),
 )

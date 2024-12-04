@@ -1,58 +1,78 @@
 package com.univalle.equipo5.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.univalle.equipo5.repository.ChallengeRepository
 import com.univalle.equipo5.model.Challenge
-import com.univalle.equipo5.data.database.AppDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ChallengeViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: ChallengeRepository
+@HiltViewModel
+class ChallengeViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+) : ViewModel() {
+
     private val _challenges = MutableLiveData<List<Challenge>>()
     val challenges: LiveData<List<Challenge>> get() = _challenges
 
     init {
-        val challengeDao = AppDatabase.getDatabase(application).ChallengeDao()
-        repository = ChallengeRepository(challengeDao)
-        fetchChallenges() // Llamar la función para obtener los retos al iniciar
+        fetchChallenges()
     }
 
+    // Insertar un desafío
     fun insertChallenge(challenge: Challenge) {
         viewModelScope.launch {
-            repository.insertChallenge(challenge)
-            fetchChallenges() // Actualizar la lista después de insertar
+            try {
+                val docId = challengeRepository.insertChallenge(challenge)
+                challenge.id = docId
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
-    fun deleteChallenge(challenge: Challenge) {
-        viewModelScope.launch {
-            repository.deleteChallenge(challenge)
-            fetchChallenges() // Actualizar la lista después de eliminar
-        }
-    }
-
+    // Actualizar un desafío
     fun updateChallenge(challenge: Challenge) {
         viewModelScope.launch {
-            repository.updateChallenge(challenge)
-            fetchChallenges() // Actualizar la lista después de editar
+            try {
+                challengeRepository.updateChallenge(challenge)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
-    private fun fetchChallenges() {
+    // Eliminar un desafío
+    fun deleteChallenge(challenge: Challenge) {
         viewModelScope.launch {
-            val challengeList = repository.getAllChallenges()
-            _challenges.postValue(challengeList) // Actualiza los retos en LiveData
+            try {
+                challengeRepository.deleteChallenge(challenge)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
+    // Obtener un desafío aleatorio
     fun getRandomChallenge(callback: (Challenge?) -> Unit) {
         viewModelScope.launch {
-            val randomChallenge = repository.getRandomChallenge()
-            callback(randomChallenge)
+            try {
+                val randomChallenge = challengeRepository.getRandomChallenge()
+                callback(randomChallenge)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                callback(null)
+            }
+        }
+    }
+
+    // Obtener todos los desafíos en tiempo real
+    private fun fetchChallenges() {
+        challengeRepository.getAllChallenges { challengesList ->
+            _challenges.postValue(challengesList)
         }
     }
 }

@@ -9,7 +9,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.databinding.DataBindingUtil
 import com.univalle.equipo5.R
 import com.univalle.equipo5.databinding.FragmentInstructionsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InstructionsFragment : Fragment() {
 
     private lateinit var binding: FragmentInstructionsBinding
